@@ -1,0 +1,4237 @@
+R<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b17">
+<title>JEEAnchor — 24 Hour Accountability</title>
+
+<style>
+:root {
+  --bg:#070b17;
+  --panel:#0e1528;
+  --panel2:#121b32;
+  --border:#202b46;
+  --text:#f4f7ff;
+  --muted:#8793ad;
+  --blue:#4f8cff;
+  --purple:#8b5cf6;
+  --green:#22c55e;
+  --yellow:#facc15;
+  --orange:#fb923c;
+  --red:#ef4444;
+  --gold:#fbbf24;
+  --shadow:0 18px 45px rgba(0,0,0,.28);
+  --radius:18px;
+}
+
+* { box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%,rgba(79,140,255,.13),transparent 28%),
+    radial-gradient(circle at 85% 10%,rgba(139,92,246,.12),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,select,textarea {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+.app {
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:250px;
+  padding:22px 16px;
+  background:rgba(9,14,28,.96);
+  border-right:1px solid var(--border);
+  z-index:20;
+}
+
+.logo {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 10px 25px;
+}
+
+.logo-mark {
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  box-shadow:0 8px 25px rgba(79,140,255,.3);
+  font-size:21px;
+}
+
+.logo strong {
+  font-size:20px;
+}
+
+.logo span {
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.nav {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.nav button {
+  width:100%;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:13px 14px;
+  border-radius:12px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active {
+  color:white;
+  background:linear-gradient(90deg,rgba(79,140,255,.16),rgba(139,92,246,.08));
+}
+
+.nav button.active {
+  box-shadow:inset 3px 0 var(--blue);
+}
+
+.sidebar-bottom {
+  position:absolute;
+  bottom:22px;
+  left:16px;
+  right:16px;
+}
+
+.profile-mini {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar {
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+
+/* MAIN */
+
+.main {
+  width:calc(100% - 250px);
+  margin-left:250px;
+  padding:28px;
+  max-width:1600px;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.topbar h1 {
+  margin:0;
+  font-size:27px;
+}
+
+.topbar p {
+  color:var(--muted);
+  margin:5px 0 0;
+}
+
+.icon-btn {
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:white;
+  width:44px;
+  height:44px;
+  border-radius:13px;
+}
+
+/* PAGES */
+
+.page {
+  display:none;
+  animation:fade .25s ease;
+}
+
+.page.active {
+  display:block;
+}
+
+@keyframes fade {
+  from { opacity:0; transform:translateY(5px); }
+  to { opacity:1; transform:none; }
+}
+
+/* CARDS */
+
+.card {
+  background:linear-gradient(145deg,rgba(18,27,50,.95),rgba(10,17,32,.96));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.card-pad {
+  padding:20px;
+}
+
+.grid {
+  display:grid;
+  gap:16px;
+}
+
+.stats-grid {
+  grid-template-columns:repeat(4,1fr);
+}
+
+.stat {
+  padding:20px;
+}
+
+.stat-label {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat-value {
+  font-size:28px;
+  font-weight:850;
+  margin-top:7px;
+}
+
+.stat-sub {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.blue { color:var(--blue); }
+.green { color:var(--green); }
+.red { color:var(--red); }
+.gold { color:var(--gold); }
+.orange { color:var(--orange); }
+.purple { color:#a78bfa; }
+
+/* HERO */
+
+.hero {
+  padding:25px;
+  margin-bottom:18px;
+  background:
+    radial-gradient(circle at 85% 20%,rgba(139,92,246,.22),transparent 30%),
+    radial-gradient(circle at 20% 100%,rgba(79,140,255,.16),transparent 30%),
+    var(--panel);
+}
+
+.hero-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.hero h2 {
+  margin:0;
+  font-size:30px;
+}
+
+.hero p {
+  color:var(--muted);
+  margin:7px 0 0;
+}
+
+.exam-count {
+  text-align:right;
+}
+
+.exam-count small {
+  color:var(--muted);
+  font-weight:700;
+}
+
+.exam-number {
+  font-size:34px;
+  font-weight:900;
+  color:#8db7ff;
+}
+
+.exam-label {
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* PROGRESS */
+
+.progress {
+  height:10px;
+  background:#1b263f;
+  border-radius:100px;
+  overflow:hidden;
+}
+
+.progress.small {
+  height:7px;
+}
+
+.progress-fill {
+  height:100%;
+  border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  transition:width .6s ease;
+}
+
+.progress-green {
+  background:linear-gradient(90deg,#16a34a,#4ade80);
+}
+
+.progress-gold {
+  background:linear-gradient(90deg,#f59e0b,#fde047);
+}
+
+.section-title {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:28px 0 13px;
+}
+
+.section-title h2 {
+  font-size:18px;
+  margin:0;
+}
+
+.section-title span {
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* TASKS */
+
+.task-list {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.task {
+  padding:19px;
+  position:relative;
+  overflow:hidden;
+}
+
+.task::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:4px;
+  background:var(--blue);
+}
+
+.task.warning::before { background:var(--orange); }
+.task.danger::before { background:var(--red); }
+
+.task-top {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.subject {
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.08em;
+  color:#9dbdff;
+}
+
+.task h3 {
+  margin:9px 0 6px;
+  font-size:17px;
+}
+
+.task-meta {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.badges {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:13px 0;
+}
+
+.badge {
+  padding:5px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+  background:#18233c;
+  color:#b8c4dc;
+}
+
+.priority-high {
+  color:#ffbd8a;
+  background:rgba(251,146,60,.12);
+}
+
+.priority-urgent {
+  color:#ff8f8f;
+  background:rgba(239,68,68,.12);
+}
+
+.timer {
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:.03em;
+  margin:14px 0 3px;
+}
+
+.timer-label {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+.timer.safe { color:#65d98c; }
+.timer.mid { color:#facc15; }
+.timer.warning { color:#fb923c; }
+.timer.danger {
+  color:#ff5252;
+  animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  50% { opacity:.55; }
+}
+
+.task-actions {
+  display:flex;
+  gap:8px;
+  margin-top:16px;
+}
+
+.btn {
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.btn:hover {
+  transform:translateY(-1px);
+}
+
+.btn-primary {
+  color:white;
+  background:linear-gradient(135deg,var(--blue),#6366f1);
+  box-shadow:0 8px 20px rgba(79,140,255,.2);
+}
+
+.btn-secondary {
+  color:#c8d3e8;
+  background:#18233a;
+  border:1px solid var(--border);
+}
+
+.btn-danger {
+  color:white;
+  background:#8f1d2c;
+}
+
+.btn-green {
+  color:white;
+  background:#16803b;
+}
+
+/* SUBJECT */
+
+.subject-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.subject-card {
+  padding:18px;
+}
+
+.subject-head {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:13px;
+}
+
+.subject-head strong {
+  font-size:15px;
+}
+
+.subject-head span {
+  color:var(--muted);
+  font-weight:800;
+}
+
+/* FORMS */
+
+.form-card {
+  max-width:900px;
+  padding:24px;
+}
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.field {
+  margin-bottom:15px;
+}
+
+.field.full {
+  grid-column:1/-1;
+}
+
+label {
+  display:block;
+  color:#c9d2e4;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+input,select,textarea {
+  width:100%;
+  border:1px solid var(--border);
+  background:#0b1325;
+  color:white;
+  padding:12px 13px;
+  border-radius:11px;
+  outline:none;
+}
+
+textarea {
+  min-height:100px;
+  resize:vertical;
+}
+
+input:focus,select:focus,textarea:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(79,140,255,.1);
+}
+
+/* BACKLOG */
+
+.backlog-card {
+  border-left:4px solid var(--red);
+  padding:19px;
+}
+
+.overdue {
+  color:#ff6d6d;
+  font-weight:850;
+  font-size:13px;
+}
+
+.retry-count {
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ACHIEVEMENTS */
+
+.achievement-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.achievement {
+  padding:20px;
+}
+
+.achievement.locked {
+  opacity:.42;
+  filter:grayscale(.7);
+}
+
+.achievement-icon {
+  font-size:34px;
+  margin-bottom:12px;
+}
+
+.achievement h3 {
+  margin:0 0 5px;
+}
+
+.achievement p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* TABLE / STATS */
+
+.table-wrap {
+  overflow:auto;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td {
+  padding:13px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  font-size:13px;
+}
+
+th {
+  color:var(--muted);
+  font-weight:700;
+}
+
+.chart {
+  height:230px;
+  display:flex;
+  align-items:end;
+  gap:12px;
+  padding:20px;
+}
+
+.bar-column {
+  flex:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+  align-items:center;
+  gap:7px;
+}
+
+.bar {
+  width:70%;
+  max-width:42px;
+  border-radius:7px 7px 2px 2px;
+  min-height:3px;
+  background:linear-gradient(to top,var(--blue),var(--purple));
+}
+
+.bar-label {
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* FILTERS */
+
+.filters {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-bottom:15px;
+}
+
+.filters input,
+.filters select {
+  width:auto;
+  min-width:145px;
+}
+
+/* CLASS SETUP */
+.setup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(3,7,18,.88);
+  backdrop-filter:blur(8px);
+  display:grid;
+  place-items:center;
+  padding:20px;
+  z-index:300;
+}
+.setup-overlay.hidden{display:none}
+.setup-box{
+  width:min(560px,100%);
+  padding:30px;
+  background:linear-gradient(145deg,#121b32,#0c1427);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+  text-align:center;
+}
+.setup-icon{font-size:46px;margin-bottom:10px}
+.setup-box h2{margin:0;font-size:28px}
+.setup-box p{color:var(--muted);margin:8px 0 24px}
+.class-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.class-option{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  padding:18px 10px;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s;
+}
+.class-option:hover{transform:translateY(-2px);border-color:var(--blue);background:rgba(79,140,255,.12)}
+.class-option span{display:block;font-size:23px;margin-bottom:7px}
+.setup-date{margin-top:18px;font-size:12px;color:var(--muted)}
+@media(max-width:500px){.class-options{grid-template-columns:1fr}}
+
+/* MODAL */
+
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  place-items:center;
+  padding:20px;
+  z-index:100;
+}
+
+.modal.open {
+  display:grid;
+}
+
+.modal-box {
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#0c1427;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:23px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+
+.modal-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.close {
+  background:#18233b;
+  border:0;
+  color:white;
+  width:38px;
+  height:38px;
+  border-radius:10px;
+}
+
+/* TOAST */
+
+.toast-container {
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.toast {
+  min-width:260px;
+  padding:14px 16px;
+  background:#101a30;
+  border:1px solid var(--border);
+  border-left:4px solid var(--blue);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  animation:toastIn .25s ease;
+}
+
+@keyframes toastIn {
+  from { transform:translateX(30px); opacity:0; }
+  to { transform:none; opacity:1; }
+}
+
+/* MOCK TEST MANAGEMENT */
+.mock-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.mock-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.mock-tab { border:1px solid var(--border); background:var(--panel); color:var(--muted); padding:9px 13px; border-radius:10px; font-weight:800; cursor:pointer; }
+.mock-tab.active { color:white; border-color:var(--blue); background:rgba(79,140,255,.14); }
+.mock-analysis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+.mock-analysis .stat { padding:16px; }
+.mock-section-title { margin:24px 0 12px; font-size:17px; }
+.mock-mini { font-size:12px; color:var(--muted); line-height:1.6; }
+.mock-card { padding:18px; }
+.mock-card .mock-result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+@media(max-width:800px){ .mock-analysis{grid-template-columns:repeat(2,1fr)} .mock-card .mock-result-grid{grid-template-columns:1fr 1fr} }
+
+/* MOBILE */
+
+.mobile-nav {
+  display:none;
+}
+
+.fab {
+  display:none;
+}
+
+.empty {
+  text-align:center;
+  padding:55px 20px;
+  color:var(--muted);
+}
+
+.empty .emoji {
+  font-size:45px;
+  margin-bottom:10px;
+}
+
+.empty h3 {
+  color:white;
+  margin:5px;
+}
+
+@media(max-width:1100px) {
+  .stats-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .achievement-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:800px) {
+  .sidebar {
+    display:none;
+  }
+
+  .main {
+    width:100%;
+    margin:0;
+    padding:18px 15px 90px;
+  }
+
+  .topbar h1 {
+    font-size:22px;
+  }
+
+  .stats-grid,
+  .task-list,
+  .subject-grid,
+  .achievement-grid,
+  .form-grid {
+    grid-template-columns:1fr;
+  }
+
+  .hero-row {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .exam-count {
+    text-align:left;
+  }
+
+  .mobile-nav {
+    display:flex;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:68px;
+    background:rgba(8,13,26,.97);
+    border-top:1px solid var(--border);
+    z-index:50;
+    justify-content:space-around;
+    padding:7px 4px;
+  }
+
+  .mobile-nav button {
+    flex:1;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font-size:10px;
+  }
+
+  .mobile-nav button.active {
+    color:white;
+  }
+
+  .mobile-nav button span {
+    display:block;
+    font-size:20px;
+    margin-bottom:2px;
+  }
+
+  .fab {
+    display:grid;
+    place-items:center;
+    position:fixed;
+    right:18px;
+    bottom:83px;
+    width:57px;
+    height:57px;
+    border:0;
+    border-radius:50%;
+    color:white;
+    font-size:27px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    box-shadow:0 12px 30px rgba(79,140,255,.4);
+    z-index:40;
+  }
+
+  .filters {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .filters input,
+  .filters select {
+    min-width:0;
+    width:100%;
+  }
+}
+
+/* LIGHT */
+
+body.light {
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --panel2:#f8faff;
+  --border:#dce3ef;
+  --text:#101828;
+  --muted:#667085;
+  --shadow:0 15px 40px rgba(16,24,40,.08);
+}
+
+body.light .sidebar {
+  background:#fff;
+}
+
+body.light input,
+body.light select,
+body.light textarea {
+  background:#fff;
+  color:#101828;
+}
+
+body.light .mobile-nav {
+  background:rgba(255,255,255,.97);
+}
+
+body.light .btn-secondary,
+body.light .icon-btn,
+body.light .close {
+  background:#edf2f8;
+  color:#344054;
+}
+
+/* NEW NAV / PROFILE / MORE */
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.more-card{padding:22px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.more-card h3{color:var(--text);}
+.more-card .more-icon{font-size:32px;margin-bottom:10px}
+.profile-float{display:flex;align-items:center;gap:9px;border:1px solid var(--border);background:var(--panel);color:var(--text);padding:5px 10px 5px 6px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow)}
+.profile-float-avatar,.pfp-preview{width:34px;height:34px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed);font-weight:900;overflow:hidden}
+.profile-float-avatar img,.pfp-preview img{width:100%;height:100%;object-fit:cover}
+.profile-summary{display:flex;align-items:center;gap:15px;padding:18px;margin-bottom:18px}
+.profile-summary-avatar{width:72px;height:72px;border-radius:22px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed);font-size:30px;font-weight:900}
+.profile-summary-avatar img{width:100%;height:100%;object-fit:cover}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px}
+.profile-badge{padding:8px 10px;border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.08);border-radius:10px;font-size:12px;font-weight:800}
+.chapter-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.chapter-card{padding:19px}
+.chapter-meta{color:var(--muted);font-size:12px;line-height:1.6}
+.chapter-progress{margin-top:12px}
+.level-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:10px;background:rgba(79,140,255,.12);color:#9dbdff;font-size:12px;font-weight:900}
+@media(max-width:800px){.more-grid,.chapter-grid{grid-template-columns:1fr}.profile-float span{display:none}.profile-float{padding:5px}.topbar{gap:8px}}
+
+</style>
+</head>
+
+<body>
+
+<!-- FIRST-TIME CLASS SETUP -->
+<div class="setup-overlay hidden" id="classSetup">
+  <div class="setup-box">
+    <div class="setup-icon">🎯</div>
+    <h2>Welcome to JEEAnchor</h2>
+    <p>First, tell us your current class so we can automatically set your target exam date.</p>
+    <div class="class-options">
+      <button class="class-option" onclick="selectStudentClass('11')">
+        <span>📘</span>11th
+      </button>
+      <button class="class-option" onclick="selectStudentClass('12')">
+        <span>📕</span>12th
+      </button>
+      <button class="class-option" onclick="selectStudentClass('leader')">
+        <span>🚀</span>Leader
+      </button>
+    </div>
+    <div class="setup-date">11th → 5 Jan 2028 &nbsp; • &nbsp; 12th / Leader → 5 Jan 2027</div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- DESKTOP SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">⚡</div>
+      <div>
+        <strong>JEEAnchor</strong>
+        <span>24-HOUR ACCOUNTABILITY
+</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="active" data-page="dashboard">🏠 Dashboard</button>
+      <button data-page="tasks">⚡ Tasks</button>
+      <button data-page="backlog">🔴 Backlog</button>
+      <button data-page="stats">📊 Statistics</button>
+      <button data-page="more">☰ More</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="profile-mini">
+        <div class="avatar" id="miniAvatar">J</div>
+        <div>
+          <strong id="miniName">JEE Student</strong>
+          <div style="font-size:11px;color:var(--muted)" id="miniLevel">Level 1</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="dateText"></p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:9px">
+        <button class="profile-float" onclick="navigate('profile')" title="Open profile">
+          <div class="profile-float-avatar" id="topProfileAvatar">🚀</div>
+          <span id="topProfileName">Profile</span>
+        </button>
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+
+      <div class="card hero">
+        <div class="hero-row">
+          <div>
+            <div style="color:#8db7ff;font-size:12px;font-weight:850;letter-spacing:.12em" id="heroExam">
+              JEE PREPARATION
+            </div>
+            <h2>Good morning, <span id="heroName">Student</span> 👋</h2>
+            <p>Every task gets 24 hours. Finish strong.</p>
+          </div>
+
+          <div class="exam-count">
+            <small>NEXT JEE EXAM</small>
+            <div class="exam-number" id="examDays">-- DAYS</div>
+            <div class="exam-label" id="examCountdown">Set your exam date in Profile</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid stats-grid">
+
+        <div class="card stat">
+          <div class="stat-label">TODAY'S PROGRESS</div>
+          <div class="stat-value" id="todayProgress">0 / 0</div>
+          <div class="progress" style="margin-top:12px">
+            <div class="progress-fill progress-green" id="todayProgressBar" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">CURRENT XP</div>
+          <div class="stat-value gold" id="xpValue">0 XP</div>
+          <div class="stat-sub" id="xpLevelText">Level 1</div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">STREAK</div>
+          <div class="stat-value orange">🔥 <span id="streakValue">0</span></div>
+          <div class="stat-sub">Longest: <span id="longestStreak">0</span> days</div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">ACTIVE BACKLOG</div>
+          <div class="stat-value red" id="backlogValue">0</div>
+          <div class="stat-sub">Permanent commitments</div>
+        </div>
+
+      </div>
+
+      <div class="section-title">
+        <h2>⚡ Active Missions</h2>
+        <span id="activeCount">0 tasks</span>
+      </div>
+
+      <div id="dashboardTasks" class="task-list"></div>
+
+      <div class="section-title">
+        <h2>📚 Subject Progress</h2>
+        <span>Based on completed tasks</span>
+      </div>
+
+      <div id="subjectProgress" class="subject-grid"></div>
+
+      <div class="section-title">
+        <h2>🔴 Backlog Recovery</h2>
+        <span id="backlogRecoveryText">0 cleared</span>
+      </div>
+
+      <div class="card card-pad">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <strong>Recover your unfinished commitments</strong>
+          <strong id="recoveryPercent">0%</strong>
+        </div>
+        <div class="progress">
+          <div class="progress-fill progress-gold" id="recoveryBar" style="width:0%"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TASKS -->
+    <section class="page" id="page-tasks">
+
+      <div class="filters">
+        <input id="taskSearch" placeholder="Search tasks..." oninput="renderTasks()">
+
+        <select id="taskSubjectFilter" onchange="renderTasks()">
+          <option value="">All Subjects</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Mathematics</option>
+        </select>
+
+        <select id="taskTypeFilter" onchange="renderTasks()">
+          <option value="">All Types</option>
+          <option>Lecture</option>
+          <option>Homework</option>
+          <option>Practice</option>
+          <option>Revision</option>
+          <option>PYQ</option>
+          <option>Mock Test</option>
+          <option>DPP</option>
+          <option>Notes</option>
+          <option>Doubt Solving</option>
+          <option>Reference Book</option>
+          <option>Formula Revision</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div id="allTasks" class="task-list"></div>
+
+    </section>
+
+    <!-- MORE -->
+    <section class="page" id="page-more">
+      <div class="card hero">
+        <div>
+          <div style="color:#8db7ff;font-size:12px;font-weight:900;letter-spacing:.1em">MORE TOOLS</div>
+          <h2>Everything else, in one place</h2>
+          <p>Add missions, manage chapters, review achievements and configure your profile.</p>
+        </div>
+      </div>
+      <div class="more-grid">
+        <button class="card more-card" onclick="navigate('add')">
+          <div><div class="more-icon">➕</div><h3 style="margin:0 0 6px">Add Task</h3><p class="stat-sub">Start a new 24-hour mission.</p></div>
+          <span class="blue" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('completed')">
+          <div><div class="more-icon">🔥</div><h3 style="margin:0 0 6px">Completed Backlog</h3><p class="stat-sub">See every recovered commitment.</p></div>
+          <span class="green" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('chapters')">
+          <div><div class="more-icon">📚</div><h3 style="margin:0 0 6px">Chapter Manager</h3><p class="stat-sub">Completion, revisions and dates.</p></div>
+          <span class="purple" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('doubts')">
+          <div><div class="more-icon">❓</div><h3 style="margin:0 0 6px">My Doubts</h3><p class="stat-sub">Save doubts from completed tasks and track them.</p></div>
+          <span class="orange" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('mocks')">
+          <div><div class="more-icon">📝</div><h3 style="margin:0 0 6px">Mock Tests</h3><p class="stat-sub">Marks, rank, test type and complete history.</p></div>
+          <span class="gold" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('achievements')">
+          <div><div class="more-icon">🏆</div><h3 style="margin:0 0 6px">Achievements</h3><p class="stat-sub">Track every unlocked badge.</p></div>
+          <span class="gold" style="font-weight:800">OPEN →</span>
+        </button>
+        <button class="card more-card" onclick="navigate('profile')">
+          <div><div class="more-icon">👤</div><h3 style="margin:0 0 6px">Profile & Settings</h3><p class="stat-sub">PFP, target, notifications and badges.</p></div>
+          <span class="blue" style="font-weight:800">OPEN →</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- DOUBTS -->
+    <section class="page" id="page-doubts">
+      <div class="card hero">
+        <div>
+          <div style="color:var(--orange);font-size:12px;font-weight:900;letter-spacing:.1em">DOUBT TRACKER</div>
+          <h2>My Doubts ❓</h2>
+          <p>Capture anything that remained unclear after completing a task.</p>
+        </div>
+      </div>
+      <div class="grid stats-grid" style="margin-bottom:18px">
+        <div class="card stat"><div class="stat-label">TOTAL DOUBTS</div><div class="stat-value" id="doubtTotal">0</div></div>
+        <div class="card stat"><div class="stat-label">OPEN DOUBTS</div><div class="stat-value orange" id="doubtOpen">0</div></div>
+        <div class="card stat"><div class="stat-label">RESOLVED</div><div class="stat-value green" id="doubtResolved">0</div></div>
+        <div class="card stat"><div class="stat-label">DOUBT XP</div><div class="stat-value gold" id="doubtXP">0</div></div>
+      </div>
+      <div id="doubtsList" class="task-list"></div>
+    </section>
+
+    <!-- MOCK TESTS -->
+    <section class="page" id="page-mocks">
+      <div class="card hero">
+        <div>
+          <div style="color:var(--gold);font-size:12px;font-weight:900;letter-spacing:.1em">TEST MANAGEMENT</div>
+          <h2>Tests & Mock Analytics 📝</h2>
+          <p>Record past tests, schedule future tests, and analyse coaching, JEE Main, JEE Advanced and home-test performance separately.</p>
+        </div>
+      </div>
+
+      <div class="mock-toolbar">
+        <button class="btn btn-primary" onclick="openPastTestForm()">➕ ADD PAST TEST</button>
+        <button class="btn btn-secondary" onclick="openFutureTestForm()">📅 SCHEDULE FUTURE TEST</button>
+      </div>
+
+      <div class="mock-tabs">
+        <button class="mock-tab active" data-mock-tab="all" onclick="setMockTab('all')">All Tests</button>
+        <button class="mock-tab" data-mock-tab="coaching" onclick="setMockTab('coaching')">🎓 Coaching Tests</button>
+        <button class="mock-tab" data-mock-tab="mains" onclick="setMockTab('mains')">JEE Main</button>
+        <button class="mock-tab" data-mock-tab="advanced" onclick="setMockTab('advanced')">JEE Advanced</button>
+        <button class="mock-tab" data-mock-tab="home" onclick="setMockTab('home')">🏠 Home Tests</button>
+        <button class="mock-tab" data-mock-tab="upcoming" onclick="setMockTab('upcoming')">📅 Upcoming</button>
+      </div>
+
+      <div class="mock-analysis">
+        <div class="card stat"><div class="stat-label">TESTS</div><div class="stat-value" id="mockTotal">0</div><div class="stat-sub">Completed</div></div>
+        <div class="card stat"><div class="stat-label">AVG MARKS</div><div class="stat-value blue" id="mockAvg">0</div><div class="stat-sub" id="mockAvgScope">All completed tests</div></div>
+        <div class="card stat"><div class="stat-label">AVG RANK</div><div class="stat-value gold" id="mockAvgRank">—</div><div class="stat-sub">Lower is better</div></div>
+        <div class="card stat"><div class="stat-label">BEST MARKS</div><div class="stat-value green" id="mockBest">0</div><div class="stat-sub">Highest score</div></div>
+      </div>
+
+      <div class="card card-pad" style="margin-bottom:18px">
+        <div class="mock-section-title" style="margin-top:0">Performance Analysis</div>
+        <div class="mock-mini" id="mockAnalysisText">Add tests to see effective averages, percentages, rank averages and category-wise performance.</div>
+      </div>
+
+      <h3 class="mock-section-title">🎓 Coaching Tests</h3>
+      <div id="coachingTestsList" class="task-list"></div>
+      <h3 class="mock-section-title">🏠 Home Tests</h3>
+      <div id="homeTestsList" class="task-list"></div>
+      <h3 class="mock-section-title">📋 All Recorded Tests</h3>
+      <div id="mockTestsList" class="task-list"></div>
+      <h3 class="mock-section-title">📅 Scheduled Future Tests</h3>
+      <div id="futureTestsList" class="task-list"></div>
+    </section>
+
+    <!-- ADD -->
+    <section class="page" id="page-add">
+
+      <div class="card form-card">
+        <h2 style="margin-top:0">⚡ Start a 24-Hour Mission</h2>
+        <p style="color:var(--muted)">
+          The moment you create this task, its 24-hour countdown begins.
+        </p>
+
+        <form id="taskForm">
+
+          <div class="form-grid">
+
+            <div class="field full">
+              <label>Task Name *</label>
+              <input id="taskTitle" required placeholder="Solve 40 questions from Electrostatics">
+            </div>
+
+            <div class="field">
+              <label>Subject *</label>
+              <select id="taskSubject" required onchange="updateChapters()">
+                <option value="">Select subject</option>
+                <option>Physics</option>
+                <option>Chemistry</option>
+                <option>Mathematics</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Chapter</label>
+              <select id="taskChapter" onchange="updateTopics()">
+                <option value="">Select chapter</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Topic</label>
+              <select id="taskTopic">
+                <option value="">Select topic</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Task Type *</label>
+              <select id="taskType" required onchange="toggleBookField()">
+                <option>Lecture</option>
+                <option>Homework</option>
+                <option>Practice</option>
+                <option>Revision</option>
+                <option>PYQ</option>
+                <option>Mock Test</option>
+                <option>DPP</option>
+                <option>Notes</option>
+                <option>Doubt Solving</option>
+                <option>Reference Book</option>
+                <option>Formula Revision</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="field" id="bookField" style="display:none">
+              <label>Book Name</label>
+              <input id="bookName" placeholder="HC Verma">
+            </div>
+
+            <div class="field">
+              <label>Priority</label>
+              <select id="taskPriority">
+                <option>Low</option>
+                <option selected>Medium</option>
+                <option>High</option>
+                <option>Urgent</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>Description</label>
+              <textarea id="taskDescription" placeholder="Add useful details..."></textarea>
+            </div>
+
+          </div>
+
+          <button class="btn btn-primary" type="submit">
+            START 24-HOUR TASK →
+          </button>
+
+        </form>
+      </div>
+
+    </section>
+
+    <!-- BACKLOG -->
+    <section class="page" id="page-backlog">
+
+      <div class="card card-pad" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <div>
+            <h2 style="margin:0">🔴 Permanent Backlog</h2>
+            <p style="color:var(--muted);margin-bottom:0">
+              These commitments cannot be deleted. Finish them to clear your backlog.
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="openBacklogForm()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input id="backlogSearch" placeholder="Search backlog..." oninput="renderBacklog()">
+
+        <select id="backlogSort" onchange="renderBacklog()">
+          <option value="oldest">Oldest</option>
+          <option value="newest">Newest</option>
+          <option value="priority">Priority</option>
+          <option value="overdue">Most overdue</option>
+          <option value="subject">Subject</option>
+        </select>
+      </div>
+
+      <div id="backlogList" class="grid"></div>
+
+    </section>
+
+    <!-- COMPLETED BACKLOG -->
+    <section class="page" id="page-completed">
+
+      <div class="card card-pad" style="margin-bottom:16px">
+        <h2 style="margin:0">🔥 Completed Backlog</h2>
+        <p style="color:var(--muted)">
+          Your recovery history. Nothing is erased.
+        </p>
+      </div>
+
+      <div id="completedBacklogList" class="grid"></div>
+
+    </section>
+
+    <!-- COMPLETED CHAPTERS -->
+<section class="page" id="page-chapters">
+
+  <div class="grid stats-grid" style="margin-bottom:18px">
+    <div class="card stat"><div class="stat-label">TOTAL TRACKED</div><div class="stat-value" id="chapterTotal">0</div></div>
+    <div class="card stat"><div class="stat-label">COMPLETED</div><div class="stat-value green" id="chapterCompleted">0</div></div>
+    <div class="card stat"><div class="stat-label">IN PROGRESS</div><div class="stat-value blue" id="chapterInProgress">0</div></div>
+    <div class="card stat"><div class="stat-label">TOTAL REVISIONS</div><div class="stat-value purple" id="chapterRevisions">0</div></div>
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div>
+        <h2 style="margin:0">📚 Chapter Manager</h2>
+        <p style="color:var(--muted);margin-bottom:0">
+          Track class, chapter, topics, start date, completion date and revision count.
+        </p>
+      </div>
+      <button class="btn btn-primary" onclick="openChapterForm()">+ Add Chapter</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <select id="completedChapterSubjectFilter" onchange="renderCompletedChapters()">
+      <option value="">All Subjects</option><option>Physics</option><option>Chemistry</option><option>Mathematics</option>
+    </select>
+    <select id="completedChapterClassFilter" onchange="renderCompletedChapters()">
+      <option value="">All Classes</option><option value="11">Class 11</option><option value="12">Class 12</option>
+    </select>
+    <select id="completedChapterStatusFilter" onchange="renderCompletedChapters()">
+      <option value="">All Status</option><option value="COMPLETED">Completed</option><option value="IN_PROGRESS">In Progress</option>
+    </select>
+  </div>
+
+  <div id="completedChaptersList" class="chapter-grid"></div>
+
+</section>
+
+<!-- STATS -->
+    <section class="page" id="page-stats">
+
+      <div class="grid stats-grid">
+
+        <div class="card stat">
+          <div class="stat-label">TOTAL TASKS</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">COMPLETED</div>
+          <div class="stat-value green" id="statCompleted">0</div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">MISSED</div>
+          <div class="stat-value red" id="statMissed">0</div>
+        </div>
+
+        <div class="card stat">
+          <div class="stat-label">COMPLETION RATE</div>
+          <div class="stat-value blue" id="statRate">0%</div>
+        </div>
+
+      </div>
+
+      <div class="section-title">
+        <h2>📈 Last 7 Days</h2>
+        <span>Completed tasks</span>
+      </div>
+
+      <div class="card">
+        <div class="chart" id="weeklyChart"></div>
+      </div>
+
+      <div class="section-title">
+        <h2>📚 Subject Statistics</h2>
+      </div>
+
+      <div class="card card-pad table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Completed</th>
+              <th>Missed</th>
+              <th>Rate</th>
+              <th>XP</th>
+              <th>Backlog</th>
+            </tr>
+          </thead>
+          <tbody id="subjectStats"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title">
+        <h2>🎯 Task Type Performance</h2>
+      </div>
+
+      <div class="card card-pad table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Completed</th>
+              <th>Missed</th>
+              <th>Rate</th>
+            </tr>
+          </thead>
+          <tbody id="typeStats"></tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="page" id="page-achievements">
+
+      <div class="card hero">
+        <div>
+          <div style="color:var(--gold);font-size:12px;font-weight:900">ACHIEVEMENT HALL</div>
+          <h2>Earn your badges 🏆</h2>
+          <p>Complete real work. Unlock real achievements.</p>
+        </div>
+      </div>
+
+      <div id="achievementGrid" class="achievement-grid"></div>
+
+    </section>
+
+    <!-- PROFILE -->
+    <section class="page" id="page-profile">
+
+      <div class="card form-card">
+
+        <h2 style="margin-top:0">👤 Profile & Settings</h2>
+
+        <div class="card profile-summary">
+          <div class="profile-summary-avatar" id="profileSummaryAvatar">🚀</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <strong id="profileSummaryName">JEE Student</strong>
+              <span class="level-badge" id="profileLevelBadge">Level 1</span>
+            </div>
+            <div class="stat-sub" style="margin-top:5px">Your unlocked badges</div>
+            <div class="badge-row" id="profileBadgeRow" style="margin-top:9px"></div>
+          </div>
+        </div>
+
+        <form id="profileForm">
+
+          <div class="field">
+            <label>Name</label>
+            <input id="profileName" required>
+          </div>
+
+          <div class="field">
+            <label>Avatar Emoji</label>
+            <input id="profileAvatar" maxlength="2" placeholder="🚀">
+          </div>
+
+          <div class="field">
+            <label>Profile Picture</label>
+            <input id="profilePfp" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+            <div class="stat-sub" style="margin-top:6px">Choose an image from your device. It is stored locally in this browser.</div>
+          </div>
+
+          <div class="field">
+            <label>Class</label>
+            <select id="profileClass">
+              <option value="11">11th</option>
+              <option value="12">12th</option>
+              <option value="leader">Leader</option>
+            </select>
+            <div class="stat-sub" style="margin-top:6px">Changing class also updates the target exam date automatically.</div>
+          </div>
+
+          <div class="field">
+            <label>JEE Target</label>
+            <select id="profileExam">
+              <option>JEE Main</option>
+              <option>JEE Advanced</option>
+              <option>Both</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Target Exam Date</label>
+            <input id="profileExamDate" type="datetime-local">
+          </div>
+
+          <div class="field">
+            <label>Target Percentile (optional)</label>
+            <input id="profilePercentile" type="number" min="0" max="100">
+          </div>
+
+          <div class="field">
+            <label>Target Rank (optional)</label>
+            <input id="profileRank" type="number" min="1">
+          </div>
+
+          <button class="btn btn-primary" type="submit">SAVE PROFILE</button>
+
+        </form>
+
+        <hr style="border-color:var(--border);margin:25px 0">
+
+        <h3>Notifications</h3>
+
+        <label style="display:flex;align-items:center;gap:10px">
+          <input type="checkbox" id="notifyEnabled" style="width:auto">
+          Enable browser notifications
+        </label>
+
+        <p style="font-size:12px;color:var(--muted)">
+          Browser notification support depends on your browser permissions.
+        </p>
+
+        <hr style="border-color:var(--border);margin:25px 0">
+
+        <h3>Data</h3>
+
+        <button class="btn btn-danger" onclick="resetAllData()">
+          RESET LOCAL DATA
+        </button>
+
+        <p style="font-size:12px;color:var(--muted)">
+          This permanently removes the data stored in this browser.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <button data-page="dashboard" class="active"><span>🏠</span>Home</button>
+  <button data-page="tasks"><span>⚡</span>Tasks</button>
+  <button data-page="backlog"><span>🔴</span>Backlog</button>
+  <button data-page="stats"><span>📊</span>Stats</button>
+  <button data-page="more"><span>☰</span>More</button>
+</nav>
+
+<button class="fab" onclick="navigate('add')">+</button>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="modalTitle">Task Details</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* =========================================================
+   JEE24 APPLICATION ENGINE
+   ========================================================= */
+
+const STORAGE_KEY = "jee24_app_v1";
+
+const syllabus = {
+  Physics: {
+    "Class 11 • Units & Dimensions": ["Units and dimensions","Errors in measurement","Significant figures","Dimensional analysis"],
+    "Class 11 • Vectors & Basic Mathematics": ["Scalars and vectors","Vector algebra","Graphs","Basic calculus used in physics"],
+    "Class 11 • Kinematics": ["Motion in one dimension","Motion in two dimensions","Projectile motion","Relative velocity"],
+    "Class 11 • Newton's Laws of Motion": ["Newton's laws","Free body diagrams","Tension and connected bodies","Pseudo force"],
+    "Class 11 • Friction": ["Static friction","Kinetic friction","Inclined plane","Rolling friction"],
+    "Class 11 • Circular Motion": ["Angular variables","Centripetal acceleration","Banking of roads","Vertical circle"],
+    "Class 11 • Work, Power & Energy": ["Work by constant and variable force","Kinetic and potential energy","Work-energy theorem","Power and conservation of energy"],
+    "Class 11 • Centre of Mass, Momentum & Collision": ["Centre of mass","Linear momentum","Impulse","Collisions"],
+    "Class 11 • Rotational Dynamics": ["Torque","Angular momentum","Moment of inertia","Rolling motion"],
+    "Class 11 • Gravitation": ["Gravitational field and potential","Orbital velocity","Satellites","Escape velocity"],
+    "Class 11 • Simple Harmonic Motion": ["SHM equation","Energy in SHM","Spring systems","Simple pendulum"],
+    "Class 11 • Waves": ["Wave motion","Waves on string","Sound waves","Standing waves and beats"],
+    "Class 11 • Properties of Matter": ["Elasticity","Fluid statics","Fluid dynamics","Viscosity and surface tension"],
+    "Class 11 • Heat & Thermal Expansion": ["Temperature scales","Thermal expansion","Calorimetry","Heat transfer"],
+    "Class 11 • Kinetic Theory of Gases": ["Ideal gas equation","Kinetic interpretation","Degrees of freedom","Mean free path"],
+    "Class 11 • Thermodynamics": ["Zeroth law","First law","Second law","Heat engines and refrigerators"],
+    "Class 12 • Electrostatics": ["Electric charge","Electric field","Gauss law","Electric potential"],
+    "Class 12 • Capacitance": ["Capacitors","Combination of capacitors","Dielectrics","Energy stored"],
+    "Class 12 • Current Electricity": ["Drift velocity","Resistance","Kirchhoff laws","Wheatstone bridge and instruments"],
+    "Class 12 • Moving Charges & Magnetism": ["Lorentz force","Biot-Savart law","Ampere law","Motion in magnetic field"],
+    "Class 12 • Magnetism & Matter": ["Magnetic dipole","Magnetic materials","Earth's magnetism","Hysteresis"],
+    "Class 12 • Electromagnetic Induction": ["Faraday law","Lenz law","Motional emf","Inductance"],
+    "Class 12 • Alternating Current": ["AC voltage and current","RMS and average values","LCR circuits","Resonance"],
+    "Class 12 • Electromagnetic Waves": ["Displacement current","EM wave properties","Spectrum","Applications"],
+    "Class 12 • Ray Optics": ["Reflection","Refraction","Lenses","Optical instruments"],
+    "Class 12 • Wave Optics": ["Huygens principle","Interference","Diffraction","Polarisation"],
+    "Class 12 • Dual Nature of Matter & Radiation": ["Photoelectric effect","Matter waves","de Broglie relation","Experimental observations"],
+    "Class 12 • Atoms & Nuclei": ["Atomic models","Bohr model","Nuclear properties","Radioactivity and nuclear energy"],
+    "Class 12 • Semiconductor Electronics": ["Semiconductors","p-n junction","Diodes","Transistors and logic gates"]
+  },
+  Chemistry: {
+    "Class 11 • Mole Concept": ["Mole and molar mass","Stoichiometry","Concentration terms","Limiting reagent"],
+    "Class 11 • Atomic Structure": ["Bohr model","Quantum numbers","Electronic configuration","Atomic spectra"],
+    "Class 11 • Periodic Table": ["Periodic law","Electronic configuration","Periodic trends","Chemical periodicity"],
+    "Class 11 • Chemical Bonding": ["Ionic bond","Covalent bond","VSEPR","Hybridisation and molecular orbitals"],
+    "Class 11 • States of Matter": ["Gas laws","Kinetic theory","Real gases","Liquids and intermolecular forces"],
+    "Class 11 • Redox & Equivalent Concept": ["Oxidation number","Balancing redox reactions","Equivalent weight","Disproportionation"],
+    "Class 11 • Thermodynamics & Thermochemistry": ["System and surroundings","Enthalpy","Hess law","Entropy and Gibbs energy"],
+    "Class 11 • Chemical Equilibrium": ["Law of mass action","Equilibrium constant","Le Chatelier principle","Equilibrium calculations"],
+    "Class 11 • Ionic Equilibrium": ["Acids and bases","pH","Buffer solutions","Solubility product"],
+    "Class 11 • Hydrogen": ["Hydrides","Water","Hydrogen peroxide","Hydrogen economy"],
+    "Class 11 • s-Block Elements": ["Alkali metals","Alkaline earth metals","Important compounds","Anomalous behaviour"],
+    "Class 11 • p-Block Elements (Class 11)": ["Group 13","Group 14","Electronic trends","Important compounds"],
+    "Class 11 • IUPAC Nomenclature": ["Functional groups","Parent chain selection","IUPAC naming","Common names"],
+    "Class 11 • General Organic Chemistry": ["Electronic displacement effects","Acidity and basicity","Reaction intermediates","Reaction mechanism"],
+    "Class 11 • Isomerism": ["Structural isomerism","Geometrical isomerism","Conformations","Optical isomerism"],
+    "Class 11 • Hydrocarbons": ["Alkanes","Alkenes","Alkynes","Aromatic hydrocarbons"],
+    "Class 12 • Solid State": ["Crystal lattices","Unit cells","Packing efficiency","Defects"],
+    "Class 12 • Solutions": ["Concentration terms","Raoult law","Colligative properties","Van't Hoff factor"],
+    "Class 12 • Electrochemistry": ["Electrochemical cells","Nernst equation","Conductance","Electrolysis"],
+    "Class 12 • Chemical Kinetics": ["Rate law","Order and molecularity","Integrated rate equations","Arrhenius equation"],
+    "Class 12 • Surface Chemistry": ["Adsorption","Catalysis","Colloids","Emulsions"],
+    "Class 12 • p-Block Elements (Class 12)": ["Group 15","Group 16","Group 17","Group 18"],
+    "Class 12 • d- & f-Block Elements": ["Transition elements","Electronic configuration","Coordination tendencies","Lanthanides and actinides"],
+    "Class 12 • Coordination Compounds": ["Ligands","Nomenclature","Isomerism","Bonding and crystal field theory"],
+    "Class 12 • Haloalkanes & Haloarenes": ["Preparation","SN1 and SN2","Elimination","Aryl halides"],
+    "Class 12 • Alcohols, Phenols & Ethers": ["Preparation","Reactions of alcohols","Phenol acidity and reactions","Ether chemistry"],
+    "Class 12 • Aldehydes, Ketones & Carboxylic Acids": ["Carbonyl chemistry","Nucleophilic addition","Carboxylic acids","Important reactions"],
+    "Class 12 • Amines": ["Basicity","Preparation","Reactions","Diazonium salts"],
+    "Class 12 • Biomolecules": ["Carbohydrates","Proteins","Vitamins","Nucleic acids"],
+    "Class 12 • Polymers": ["Addition polymerisation","Condensation polymerisation","Important polymers","Biodegradable polymers"],
+    "Class 12 • Chemistry in Everyday Life": ["Drugs","Food additives","Cleansing agents","Antiseptics and disinfectants"]
+  },
+  Mathematics: {
+    "Class 11 • Sets & Number System": ["Sets","Intervals","Basic number system","Operations on sets"],
+    "Class 11 • Fundamentals of Algebra": ["Algebraic identities","Inequalities","Modulus","Logarithms"],
+    "Class 11 • Quadratic Equations": ["Roots","Nature of roots","Relations between roots and coefficients","Parameter problems"],
+    "Class 11 • Sequences & Series": ["AP","GP","HP","Special series"],
+    "Class 11 • Trigonometric Ratios & Identities": ["Trigonometric ratios","Identities","Compound angles","Multiple angles"],
+    "Class 11 • Trigonometric Equations": ["General solutions","Principal solutions","Transformation methods","Inverse trigonometric basics"],
+    "Class 11 • Solution of Triangles": ["Sine rule","Cosine rule","Projection","Triangle identities"],
+    "Class 11 • Permutations & Combinations": ["Fundamental principle of counting","Permutation","Combination","Distribution"],
+    "Class 11 • Binomial Theorem": ["General term","Middle term","Binomial coefficients","Coefficient problems"],
+    "Class 11 • Straight Lines": ["Slope","Line equations","Distance","Pair of lines"],
+    "Class 11 • Circle": ["Standard circle","Tangent and normal","Chord","Family of circles"],
+    "Class 11 • Parabola": ["Standard parabola","Parametric form","Tangent and normal","Chord of contact"],
+    "Class 11 • Ellipse": ["Standard ellipse","Parametric form","Tangents","Normals"],
+    "Class 11 • Hyperbola": ["Standard hyperbola","Asymptotes","Tangents","Conjugate hyperbola"],
+    "Class 11 • Statistics": ["Mean","Variance","Standard deviation","Grouped data"],
+    "Class 12 • Complex Numbers": ["Argand plane","Modulus and argument","Locus","Roots of complex numbers"],
+    "Class 12 • Matrices & Determinants": ["Matrix operations","Determinants","Inverse","Linear equations"],
+    "Class 12 • Probability": ["Basic probability","Conditional probability","Bayes theorem","Random variables"],
+    "Class 12 • Limits & Continuity": ["Limits","Standard limits","Continuity","Intermediate value theorem"],
+    "Class 12 • Differentiability": ["Derivative","Differentiability","Chain rule","Implicit and parametric differentiation"],
+    "Class 12 • Application of Derivatives": ["Increasing/decreasing","Maxima and minima","Tangents and normals","Approximation"],
+    "Class 12 • Indefinite Integration": ["Basic integration","Substitution","Partial fractions","Integration by parts"],
+    "Class 12 • Definite Integration": ["Properties","Evaluation","Symmetry","Area using definite integrals"],
+    "Class 12 • Area Under Curve": ["Area between curves","Area with axes","Symmetry","Region splitting"],
+    "Class 12 • Differential Equations": ["Formation","Variable separable","Homogeneous equations","Linear differential equations"],
+    "Class 12 • Vector Algebra": ["Vectors","Dot product","Cross product","Scalar triple product"],
+    "Class 12 • Three Dimensional Geometry": ["Direction cosines","Lines","Planes","Distances and angles"],
+    "Class 12 • Probability Distribution": ["Random variables","Mean and variance","Binomial distribution","Distribution problems"]
+  }
+};
+
+const taskTypes = [
+  "Lecture","Homework","Practice","Revision","PYQ","Mock Test",
+  "DPP","Notes","Doubt Solving","Reference Book",
+  "Formula Revision","Theory","Problem Solving","Other"
+];
+
+const priorityWeight = {
+  Low:1,
+  Medium:2,
+  High:3,
+  Urgent:4
+};
+
+const achievements = [
+  {
+    id:"first",
+    name:"First Step",
+    icon:"🚀",
+    description:"Complete your first task.",
+    check:s => s.completed >= 1
+  },
+  {
+    id:"ten",
+    name:"10 Tasks",
+    icon:"⚡",
+    description:"Complete 10 tasks.",
+    check:s => s.completed >= 10
+  },
+  {
+    id:"fifty",
+    name:"50 Tasks",
+    icon:"🔥",
+    description:"Complete 50 tasks.",
+    check:s => s.completed >= 50
+  },
+  {
+    id:"century",
+    name:"Century",
+    icon:"💯",
+    description:"Complete 100 tasks.",
+    check:s => s.completed >= 100
+  },
+  {
+    id:"crusher",
+    name:"Backlog Crusher",
+    icon:"🔨",
+    description:"Clear 10 backlog tasks.",
+    check:s => s.completedBacklog >= 10
+  },
+  {
+    id:"warrior",
+    name:"Backlog Warrior",
+    icon:"🛡️",
+    description:"Clear 50 backlog tasks.",
+    check:s => s.completedBacklog >= 50
+  },
+  {
+    id:"streak7",
+    name:"7-Day Streak",
+    icon:"🔥",
+    description:"Maintain a 7-day streak.",
+    check:s => s.longestStreak >= 7
+  },
+  {
+    id:"streak30",
+    name:"30-Day Streak",
+    icon:"👑",
+    description:"Maintain a 30-day streak.",
+    check:s => s.longestStreak >= 30
+  },
+  {
+    id:"speed",
+    name:"Speed Solver",
+    icon:"⚡",
+    description:"Complete a task with 12+ hours remaining.",
+    check:s => s.speedSolver
+  },
+  {
+    id:"pyq",
+    name:"PYQ Master",
+    icon:"📘",
+    description:"Complete 10 PYQ tasks.",
+    check:s => s.pyq >= 10
+  },
+  {
+    id:"revision",
+    name:"Revision Machine",
+    icon:"🧠",
+    description:"Complete 10 revision tasks.",
+    check:s => s.revision >= 10
+  },
+  {
+    id:"recovery",
+    name:"No Excuses",
+    icon:"💪",
+    description:"Clear 3 backlog tasks.",
+    check:s => s.completedBacklog >= 3
+  }
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let db = loadDB();
+
+function defaultDB() {
+  return {
+    profile:{
+      name:"JEE Student",
+      avatar:"🚀",
+      pfp:"",
+      exam:"JEE Main",
+      examDate:"",
+      percentile:"",
+      rank:"",
+      notifications:true
+    },
+    tasks:[],
+    xpTransactions:[],
+    achievements:[],
+    chapters:[],
+    doubts:[],
+    mockTests:[],
+    scheduledTests:[],
+    mockTab:"all",
+    progression:{initialized:false,lastLevel:1},
+    theme:"dark"
+  };
+}
+
+function loadDB() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved) {
+      const parsed = JSON.parse(saved);
+      const merged = {...defaultDB(),...parsed};
+      merged.profile = {...defaultDB().profile,...(parsed.profile||{})};
+      merged.chapters = Array.isArray(parsed.chapters) ? parsed.chapters : [];
+      merged.doubts = Array.isArray(parsed.doubts) ? parsed.doubts : [];
+      merged.mockTests = Array.isArray(parsed.mockTests) ? parsed.mockTests : [];
+      merged.scheduledTests = Array.isArray(parsed.scheduledTests) ? parsed.scheduledTests : [];
+      merged.mockTab = parsed.mockTab || "all";
+      merged.progression = {...defaultDB().progression,...(parsed.progression||{})};
+      return merged;
+    }
+  } catch(e) {
+    console.error(e);
+  }
+  return defaultDB();
+}
+
+function saveDB() {
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(db));
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+const titles = {
+  dashboard:"Dashboard",
+  tasks:"Today's Tasks",
+  backlog:"Backlog",
+  stats:"Statistics",
+  more:"More",
+  add:"Add Task",
+  completed:"Completed Backlog",
+  chapters:"Chapter Manager",
+  doubts:"My Doubts",
+  mocks:"Mock Tests",
+  achievements:"Achievements",
+  profile:"Profile / Settings"
+};
+
+function navigate(page) {
+
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.remove("active");
+  });
+
+  document.getElementById("page-" + page).classList.add("active");
+
+  document.querySelectorAll("[data-page]").forEach(b => {
+    b.classList.toggle("active",b.dataset.page === page);
+  });
+
+  document.getElementById("pageTitle").textContent = titles[page];
+
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  renderAll();
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click",() => navigate(button.dataset.page));
+});
+
+/* =========================================================
+   TASK CREATION
+   ========================================================= */
+
+document.getElementById("taskForm").addEventListener("submit",e => {
+
+  e.preventDefault();
+
+  const now = Date.now();
+
+  const task = {
+    id:crypto.randomUUID ? crypto.randomUUID() : String(now),
+    title:document.getElementById("taskTitle").value.trim(),
+    description:document.getElementById("taskDescription").value.trim(),
+    subject:document.getElementById("taskSubject").value,
+    chapter:document.getElementById("taskChapter").value,
+    topic:document.getElementById("taskTopic").value,
+    taskType:document.getElementById("taskType").value,
+    priority:document.getElementById("taskPriority").value,
+    bookName:document.getElementById("bookName").value.trim(),
+    status:"ACTIVE",
+    createdAt:now,
+    deadline:now + 24 * 60 * 60 * 1000,
+    completedAt:null,
+    xpAwarded:0,
+    originalTaskId:null,
+    retryCount:0,
+    missedCount:0,
+    source:"NORMAL",
+    history:[{
+      event:"CREATED",
+      timestamp:now
+    }]
+  };
+
+  db.tasks.push(task);
+  saveDB();
+
+  e.target.reset();
+
+  document.getElementById("taskChapter").innerHTML =
+    '<option value="">Select chapter</option>';
+
+  document.getElementById("taskTopic").innerHTML =
+    '<option value="">Select topic</option>';
+
+  document.getElementById("bookField").style.display="none";
+
+  toast("⏱ 24-hour mission started!");
+
+  navigate("dashboard");
+});
+
+/* =========================================================
+   SYLLABUS
+   ========================================================= */
+
+function updateChapters() {
+
+  const subject = document.getElementById("taskSubject").value;
+  const chapter = document.getElementById("taskChapter");
+  const topic = document.getElementById("taskTopic");
+
+  chapter.innerHTML = '<option value="">Select chapter</option>';
+  topic.innerHTML = '<option value="">Select topic</option>';
+
+  if(!subject || !syllabus[subject]) return;
+
+  Object.keys(syllabus[subject]).forEach(c => {
+    chapter.innerHTML += `<option>${escapeHTML(c)}</option>`;
+  });
+}
+
+function updateTopics() {
+
+  const subject = document.getElementById("taskSubject").value;
+  const chapter = document.getElementById("taskChapter").value;
+  const topic = document.getElementById("taskTopic");
+
+  topic.innerHTML = '<option value="">Select topic</option>';
+
+  if(!subject || !chapter) return;
+
+  syllabus[subject][chapter].forEach(t => {
+    topic.innerHTML += `<option>${escapeHTML(t)}</option>`;
+  });
+}
+
+function toggleBookField() {
+  const type = document.getElementById("taskType").value;
+  document.getElementById("bookField").style.display =
+    type === "Reference Book" ? "block" : "none";
+}
+
+/* =========================================================
+   EXPIRATION
+   ========================================================= */
+
+function processExpirations() {
+
+  const now = Date.now();
+  let changed = false;
+
+  db.tasks.forEach(task => {
+
+    if(task.status === "ACTIVE" && now >= task.deadline) {
+
+      task.status = "BACKLOG";
+      task.missedCount = (task.missedCount || 0) + 1;
+
+      if(!task.history) task.history=[];
+
+      task.history.push({
+        event:"EXPIRED",
+        timestamp:now
+      });
+
+      changed = true;
+
+      notify(
+        "🔴 Task moved to Backlog",
+        `"${task.title}" missed its 24-hour deadline.`
+      );
+    }
+
+  });
+
+  if(changed) {
+    saveDB();
+  }
+}
+
+/* =========================================================
+   COMPLETE TASK
+   ========================================================= */
+
+function completeTask(id) {
+
+  processExpirations();
+
+  const task = db.tasks.find(t => t.id === id);
+
+  if(!task || task.status !== "ACTIVE") {
+    toast("This task is no longer active.");
+    renderAll();
+    return;
+  }
+
+  const now = Date.now();
+
+  if(now >= task.deadline) {
+    processExpirations();
+    toast("⏰ Deadline expired — task moved to backlog.");
+    renderAll();
+    return;
+  }
+
+  const remaining = task.deadline - now;
+  const hoursRemaining = remaining / (60 * 60 * 1000);
+
+  let xp = 100;
+
+  if(task.priority === "High") xp += 20;
+  if(task.priority === "Urgent") xp += 30;
+
+  if(hoursRemaining > 12) xp += 25;
+  else if(hoursRemaining >= 6) xp += 15;
+  else if(hoursRemaining >= 3) xp += 10;
+
+  const isBacklog = task.source === "BACKLOG";
+
+  if(isBacklog) {
+    // Backlog recovery is intentionally worth more XP than the old 50 XP reward.
+    xp = 125;
+  }
+
+  task.status = isBacklog ? "COMPLETED_BACKLOG" : "COMPLETED";
+  task.completedAt = now;
+  task.xpAwarded = xp;
+
+  if(!task.history) task.history=[];
+
+  task.history.push({
+    event:isBacklog ? "BACKLOG_COMPLETED" : "COMPLETED",
+    timestamp:now,
+    xp
+  });
+
+  addXP(xp,`Completed: ${task.title}`,task.id);
+
+  updateStreak();
+
+  if(hoursRemaining > 12) {
+    task.speedSolver = true;
+  }
+
+  saveDB();
+
+  // Show the completion popup first. Any level-up/badge popups are queued
+  // behind it so they can never replace the task-complete popup.
+  showCompletion(task,xp,isBacklog);
+
+  announceLevelIfNeeded();
+  checkAchievements();
+
+  renderAll();
+}
+
+/* =========================================================
+   XP
+   ========================================================= */
+
+function addXP(amount,reason,taskId=null) {
+
+  db.xpTransactions.push({
+    id:crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    amount,
+    reason,
+    taskId,
+    createdAt:Date.now()
+  });
+
+  saveDB();
+}
+
+function removeXP(amount,reason,taskId=null) {
+  addXP(-Math.abs(amount),reason,taskId);
+}
+
+function totalXP() {
+  return db.xpTransactions.reduce((sum,t) => sum + Number(t.amount || 0),0);
+}
+
+function levelFromXP(xp) {
+
+  const levels = [
+    {level:1,xp:0},
+    {level:2,xp:500},
+    {level:3,xp:1200},
+    {level:4,xp:2000},
+    {level:5,xp:3000},
+    {level:6,xp:4300},
+    {level:7,xp:5800},
+    {level:8,xp:7600},
+    {level:9,xp:9700},
+    {level:10,xp:12100}
+  ];
+
+  let current = levels[0];
+
+  for(const l of levels) {
+    if(xp >= l.xp) current = l;
+  }
+
+  return current;
+}
+
+function nextLevel(level) {
+  const levels = [
+    {level:1,xp:0},
+    {level:2,xp:500},
+    {level:3,xp:1200},
+    {level:4,xp:2000},
+    {level:5,xp:3000},
+    {level:6,xp:4300},
+    {level:7,xp:5800},
+    {level:8,xp:7600},
+    {level:9,xp:9700},
+    {level:10,xp:12100}
+  ];
+
+  return levels.find(x => x.level === level + 1);
+}
+
+/* =========================================================
+   STREAK
+   ========================================================= */
+
+function completionDates() {
+
+  return [...new Set(
+    db.tasks
+      .filter(t => t.completedAt)
+      .map(t => dateKey(t.completedAt))
+  )].sort();
+}
+
+function updateStreak() {
+
+  const dates = completionDates();
+
+  if(!dates.length) return;
+
+  let streak = 1;
+
+  for(let i=dates.length-1;i>0;i--) {
+
+    const a = new Date(dates[i]);
+    const b = new Date(dates[i-1]);
+
+    const diff =
+      Math.round((a-b)/(24*60*60*1000));
+
+    if(diff === 1) streak++;
+    else break;
+  }
+
+  const old = Number(localStorage.getItem("jee24_streak") || 0);
+
+  localStorage.setItem("jee24_streak",String(streak));
+
+  if(streak > old) {
+    localStorage.setItem("jee24_longest",String(streak));
+  }
+}
+
+function getStreak() {
+  return Number(localStorage.getItem("jee24_streak") || 0);
+}
+
+function getLongestStreak() {
+  return Number(localStorage.getItem("jee24_longest") || 0);
+}
+
+/* =========================================================
+   RENDER DASHBOARD
+   ========================================================= */
+
+function renderDashboard() {
+
+  const p = db.profile;
+  const xp = totalXP();
+  const level = levelFromXP(xp);
+  const next = nextLevel(level.level);
+
+  document.getElementById("heroName").textContent = p.name || "Student";
+  document.getElementById("heroExam").textContent =
+    p.exam ? p.exam.toUpperCase() : "JEE PREPARATION";
+
+  document.getElementById("xpValue").textContent = `${xp} XP`;
+  document.getElementById("xpLevelText").textContent =
+    `LEVEL ${level.level}${next ? ` • ${xp} / ${next.xp} XP` : ""}`;
+
+  document.getElementById("streakValue").textContent = getStreak();
+  document.getElementById("longestStreak").textContent = getLongestStreak();
+
+  const active = db.tasks.filter(t => t.status === "ACTIVE");
+  const backlog = db.tasks.filter(t => t.status === "BACKLOG");
+
+  document.getElementById("backlogValue").textContent = backlog.length;
+  document.getElementById("activeCount").textContent =
+    `${active.length} active missions`;
+
+  const today = dateKey(Date.now());
+
+  const completedToday = db.tasks.filter(
+    t => t.completedAt && dateKey(t.completedAt) === today
+  ).length;
+
+  const todayCreated = db.tasks.filter(
+    t => dateKey(t.createdAt) === today
+  ).length;
+
+  const todayTotal = Math.max(todayCreated,completedToday);
+
+  const todayPercent =
+    todayTotal ? Math.min(100,Math.round(completedToday/todayTotal*100)) : 0;
+
+  document.getElementById("todayProgress").textContent =
+    `${completedToday} / ${todayTotal}`;
+
+  document.getElementById("todayProgressBar").style.width =
+    `${todayPercent}%`;
+
+  renderTaskList(
+    active.slice(0,6),
+    document.getElementById("dashboardTasks")
+  );
+
+  renderSubjectProgress();
+
+  const completedBacklog =
+    db.tasks.filter(t => t.status === "COMPLETED_BACKLOG").length;
+
+  const recoveryTotal = backlog.length + completedBacklog;
+  const recovery =
+    recoveryTotal ? Math.round(completedBacklog/recoveryTotal*100) : 0;
+
+  document.getElementById("backlogRecoveryText").textContent =
+    `${completedBacklog} cleared`;
+
+  document.getElementById("recoveryPercent").textContent =
+    `${recovery}%`;
+
+  document.getElementById("recoveryBar").style.width =
+    `${recovery}%`;
+
+  renderExamCountdown();
+}
+
+/* =========================================================
+   TASK RENDERING
+   ========================================================= */
+
+function renderTasks() {
+
+  const search =
+    (document.getElementById("taskSearch")?.value || "").toLowerCase();
+
+  const subject =
+    document.getElementById("taskSubjectFilter")?.value || "";
+
+  const type =
+    document.getElementById("taskTypeFilter")?.value || "";
+
+  let tasks = db.tasks.filter(t => t.status === "ACTIVE");
+
+  tasks = tasks.filter(t => {
+
+    const text =
+      `${t.title} ${t.description} ${t.chapter} ${t.topic}`.toLowerCase();
+
+    return (
+      (!search || text.includes(search)) &&
+      (!subject || t.subject === subject) &&
+      (!type || t.taskType === type)
+    );
+  });
+
+  renderTaskList(tasks,document.getElementById("allTasks"));
+}
+
+function renderTaskList(tasks,container) {
+
+  if(!container) return;
+
+  if(!tasks.length) {
+    container.innerHTML = `
+      <div class="card empty" style="grid-column:1/-1">
+        <div class="emoji">🎯</div>
+        <h3>No missions yet</h3>
+        <p>Add a JEE task and start your 24-hour challenge.</p>
+        <button class="btn btn-primary" onclick="navigate('add')">
+          ADD FIRST TASK
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = tasks.map(task => {
+
+    const remaining = Math.max(0,task.deadline - Date.now());
+    const state = timerState(remaining);
+
+    return `
+      <div class="card task ${state.class}">
+        <div class="task-top">
+          <div>
+            <div class="subject">⚡ ${escapeHTML(task.subject || "JEE")}</div>
+            <h3>${escapeHTML(task.title)}</h3>
+            <div class="task-meta">
+              ${escapeHTML(task.chapter || "General")}
+              ${task.topic ? " → " + escapeHTML(task.topic) : ""}
+            </div>
+          </div>
+          <div style="font-size:20px">🎯</div>
+        </div>
+
+        <div class="badges">
+          <span class="badge">${escapeHTML(task.taskType)}</span>
+          <span class="badge priority-${task.priority.toLowerCase()}">
+            ${escapeHTML(task.priority)}
+          </span>
+          ${task.bookName ? `<span class="badge">📚 ${escapeHTML(task.bookName)}</span>` : ""}
+        </div>
+
+        <div class="timer ${state.class}" data-deadline="${task.deadline}">
+          ${formatTime(remaining)}
+        </div>
+
+        <div class="timer-label">
+          remaining • Due ${formatDate(task.deadline)}
+        </div>
+
+        <div class="task-actions">
+          <button class="btn btn-primary" onclick="completeTask('${task.id}')">
+            COMPLETE ✓
+          </button>
+
+          <button class="btn btn-secondary" onclick="showTaskDetails('${task.id}')">
+            VIEW
+          </button>
+        </div>
+      </div>
+    `;
+
+  }).join("");
+}
+
+/* =========================================================
+   BACKLOG
+   ========================================================= */
+
+function renderBacklog() {
+
+  const search =
+    (document.getElementById("backlogSearch")?.value || "").toLowerCase();
+
+  const sort =
+    document.getElementById("backlogSort")?.value || "oldest";
+
+  let list = db.tasks.filter(t => t.status === "BACKLOG");
+
+  list = list.filter(t => {
+    const text =
+      `${t.title} ${t.subject} ${t.chapter} ${t.topic}`.toLowerCase();
+
+    return !search || text.includes(search);
+  });
+
+  list.sort((a,b) => {
+
+    if(sort === "newest") return b.createdAt-a.createdAt;
+    if(sort === "priority")
+      return priorityWeight[b.priority]-priorityWeight[a.priority];
+    if(sort === "subject")
+      return a.subject.localeCompare(b.subject);
+    if(sort === "overdue")
+      return (Date.now()-b.deadline)-(Date.now()-a.deadline);
+
+    return a.createdAt-b.createdAt;
+  });
+
+  const container = document.getElementById("backlogList");
+
+  if(!list.length) {
+
+    container.innerHTML = `
+      <div class="card empty">
+        <div class="emoji">🔥</div>
+        <h3>BACKLOG CLEAR!</h3>
+        <p>Nothing is waiting for you.</p>
+        <button class="btn btn-primary" onclick="openBacklogForm()">
+          ADD TO BACKLOG
+        </button>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = list.map(task => {
+
+    const overdue = Math.max(0,Date.now()-task.deadline);
+
+    return `
+      <div class="card backlog-card">
+        <div class="subject">🔴 BACKLOG • ${escapeHTML(task.subject)}</div>
+
+        <h3 style="margin:8px 0">${escapeHTML(task.title)}</h3>
+
+        <div class="task-meta">
+          ${escapeHTML(task.chapter || "General")}
+          ${task.topic ? " → " + escapeHTML(task.topic) : ""}
+        </div>
+
+        <div class="badges">
+          <span class="badge">${escapeHTML(task.taskType)}</span>
+          <span class="badge priority-${task.priority.toLowerCase()}">
+            ${escapeHTML(task.priority)}
+          </span>
+        </div>
+
+        <div class="overdue">
+          Overdue by ${formatDuration(overdue)}
+        </div>
+
+        <div class="retry-count" style="margin-top:7px">
+          Missed: ${task.missedCount || 1}
+          • Retries: ${task.retryCount || 0}
+        </div>
+
+        <div class="task-actions">
+          <button class="btn btn-primary" onclick="retryTask('${task.id}')">
+            RETRY
+          </button>
+
+          <button class="btn btn-secondary" onclick="showTaskDetails('${task.id}')">
+            VIEW
+          </button>
+        </div>
+      </div>
+    `;
+
+  }).join("");
+}
+
+/* =========================================================
+   RETRY
+   ========================================================= */
+
+function retryTask(id) {
+
+  const task = db.tasks.find(t => t.id === id);
+
+  if(!task || task.status !== "BACKLOG") return;
+
+  const now = Date.now();
+
+  task.status = "ACTIVE";
+  task.deadline = now + 24*60*60*1000;
+  task.retryCount = (task.retryCount || 0) + 1;
+  task.source = "BACKLOG";
+
+  task.history.push({
+    event:"RETRY",
+    timestamp:now,
+    retryNumber:task.retryCount
+  });
+
+  saveDB();
+
+  toast("🔁 New 24-hour recovery window started!");
+
+  navigate("tasks");
+}
+
+/* =========================================================
+   MANUAL BACKLOG
+   ========================================================= */
+
+function openBacklogForm() {
+
+  document.getElementById("modalTitle").textContent =
+    "Add Directly to Backlog";
+
+  document.getElementById("modalContent").innerHTML = `
+    <form id="backlogForm">
+
+      <div class="field">
+        <label>Task Name *</label>
+        <input id="bTitle" required placeholder="Finish pending Rotational Motion questions">
+      </div>
+
+      <div class="field">
+        <label>Subject</label>
+        <select id="bSubject">
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Mathematics</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Chapter</label>
+        <input id="bChapter" placeholder="Rotational Motion">
+      </div>
+
+      <div class="field">
+        <label>Topic</label>
+        <input id="bTopic" placeholder="Moment of inertia">
+      </div>
+
+      <div class="field">
+        <label>Task Type</label>
+        <select id="bType">
+          ${taskTypes.map(x => `<option>${x}</option>`).join("")}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Priority</label>
+        <select id="bPriority">
+          <option>Low</option>
+          <option selected>Medium</option>
+          <option>High</option>
+          <option>Urgent</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea id="bDescription"></textarea>
+      </div>
+
+      <button class="btn btn-primary" type="submit">
+        ADD TO PERMANENT BACKLOG
+      </button>
+
+    </form>
+  `;
+
+  document.getElementById("backlogForm").addEventListener("submit",e => {
+
+    e.preventDefault();
+
+    const now = Date.now();
+
+    db.tasks.push({
+      id:crypto.randomUUID ? crypto.randomUUID() : String(now),
+      title:document.getElementById("bTitle").value.trim(),
+      description:document.getElementById("bDescription").value.trim(),
+      subject:document.getElementById("bSubject").value,
+      chapter:document.getElementById("bChapter").value.trim(),
+      topic:document.getElementById("bTopic").value.trim(),
+      taskType:document.getElementById("bType").value,
+      priority:document.getElementById("bPriority").value,
+      status:"BACKLOG",
+      createdAt:now,
+      deadline:null,
+      completedAt:null,
+      xpAwarded:0,
+      originalTaskId:null,
+      retryCount:0,
+      missedCount:0,
+      source:"BACKLOG",
+      history:[
+        {
+          event:"MANUALLY_ADDED_TO_BACKLOG",
+          timestamp:now
+        }
+      ]
+    });
+
+    saveDB();
+    closeModal();
+    toast("🔴 Added to permanent backlog.");
+    renderAll();
+  });
+
+  document.getElementById("modal").classList.add("open");
+}
+
+/* =========================================================
+   CHAPTER MANAGER
+   ========================================================= */
+
+function localDateTimeValue(timestamp) {
+  if(!timestamp) return "";
+  const d = new Date(timestamp);
+  const offset = d.getTimezoneOffset();
+  return new Date(d.getTime()-offset*60000).toISOString().slice(0,16);
+}
+
+function chapterClass(chapter) {
+  const match = String(chapter||"").match(/^Class\s+(11|12)\s+•\s+/);
+  return match ? match[1] : "";
+}
+
+function chapterTitle(chapter) {
+  return String(chapter||"").replace(/^Class\s+(11|12)\s+•\s+/,"");
+}
+
+function openChapterForm(id=null) {
+  const existing = id ? db.chapters.find(c=>c.id===id) : null;
+  const subject = existing?.subject || "Physics";
+  const className = existing?.className || "11";
+
+  document.getElementById("modalTitle").textContent = existing ? "Edit Chapter" : "Add Chapter";
+  document.getElementById("modalContent").innerHTML = `
+    <form onsubmit="saveChapter(event)">
+      <input type="hidden" id="chapterEditId" value="${existing?.id||""}">
+      <div class="form-grid">
+        <div class="field">
+          <label>Class</label>
+          <select id="chapterClass" onchange="updateChapterManagerOptions()">
+            <option value="11" ${className==="11"?"selected":""}>Class 11</option>
+            <option value="12" ${className==="12"?"selected":""}>Class 12</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Subject</label>
+          <select id="chapterSubject" onchange="updateChapterManagerOptions()">
+            <option ${subject==="Physics"?"selected":""}>Physics</option>
+            <option ${subject==="Chemistry"?"selected":""}>Chemistry</option>
+            <option ${subject==="Mathematics"?"selected":""}>Mathematics</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Chapter</label>
+          <select id="chapterName"></select>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="chapterStatus">
+            <option value="IN_PROGRESS" ${existing?.status==="IN_PROGRESS"?"selected":""}>In Progress</option>
+            <option value="COMPLETED" ${existing?.status==="COMPLETED"?"selected":""}>Completed</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Revision Count</label>
+          <input id="chapterRevisions" type="number" min="0" step="1" value="${existing?.revisions||0}">
+        </div>
+        <div class="field">
+          <label>Started</label>
+          <input id="chapterStartedAt" type="datetime-local" value="${localDateTimeValue(existing?.startedAt)||localDateTimeValue(Date.now())}">
+        </div>
+        <div class="field">
+          <label>Completed</label>
+          <input id="chapterCompletedAt" type="datetime-local" value="${localDateTimeValue(existing?.completedAt)}">
+        </div>
+        <div class="field full">
+          <label>Notes</label>
+          <textarea id="chapterNotes" placeholder="Important formulas, weak areas, revision plan...">${escapeHTML(existing?.notes||"")}</textarea>
+        </div>
+      </div>
+      <div id="chapterTopicPreview" class="card card-pad" style="margin:5px 0 16px"></div>
+      <div class="task-actions">
+        <button class="btn btn-primary" type="submit">SAVE CHAPTER</button>
+        <button class="btn btn-secondary" type="button" onclick="closeModal()">CANCEL</button>
+      </div>
+    </form>
+  `;
+  updateChapterManagerOptions(existing?.chapter || "");
+  document.getElementById("modal").classList.add("open");
+}
+
+function updateChapterManagerOptions(selected="") {
+  const subject = document.getElementById("chapterSubject").value;
+  const className = document.getElementById("chapterClass").value;
+  const select = document.getElementById("chapterName");
+  if(!select) return;
+  const options = Object.keys(syllabus[subject]||{}).filter(c=>chapterClass(c)===className);
+  select.innerHTML = options.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(chapterTitle(c))}</option>`).join("");
+  if(selected && options.includes(selected)) select.value=selected;
+  updateChapterTopicPreview();
+}
+
+function updateChapterTopicPreview() {
+  const subject = document.getElementById("chapterSubject")?.value;
+  const chapter = document.getElementById("chapterName")?.value;
+  const box = document.getElementById("chapterTopicPreview");
+  if(!box || !chapter) return;
+  const topics = syllabus[subject]?.[chapter] || [];
+  box.innerHTML = `<strong>Topics in this chapter</strong><div class="badges" style="margin-bottom:0">${topics.map(t=>`<span class="badge">${escapeHTML(t)}</span>`).join("")}</div>`;
+}
+
+function saveChapter(event) {
+  event.preventDefault();
+  const id = document.getElementById("chapterEditId").value;
+  const now = Date.now();
+  const subject = document.getElementById("chapterSubject").value;
+  const chapter = document.getElementById("chapterName").value;
+  const status = document.getElementById("chapterStatus").value;
+  const startedValue = document.getElementById("chapterStartedAt").value;
+  const completedValue = document.getElementById("chapterCompletedAt").value;
+  const startedAt = startedValue ? new Date(startedValue).getTime() : now;
+  const completedAt = status === "COMPLETED" ? (completedValue ? new Date(completedValue).getTime() : now) : null;
+
+  const record = {
+    id:id || (crypto.randomUUID ? crypto.randomUUID() : String(now)),
+    className:document.getElementById("chapterClass").value,
+    subject, chapter,
+    status,
+    startedAt,
+    completedAt,
+    revisions:Math.max(0,Number(document.getElementById("chapterRevisions").value)||0),
+    notes:document.getElementById("chapterNotes").value.trim(),
+    updatedAt:now
+  };
+
+  if(id) {
+    const index = db.chapters.findIndex(c=>c.id===id);
+    if(index>=0) db.chapters[index] = {...db.chapters[index],...record};
+  } else {
+    db.chapters.push(record);
+  }
+  saveDB();
+  closeModal();
+  toast(status === "COMPLETED" ? "✅ Chapter marked completed." : "📚 Chapter progress saved.");
+  renderAll();
+}
+
+function reviseChapter(id) {
+  const chapter = db.chapters.find(c=>c.id===id);
+  if(!chapter) return;
+  chapter.revisions = (chapter.revisions||0)+1;
+  chapter.updatedAt = Date.now();
+  saveDB();
+  toast(`🧠 Revision ${chapter.revisions} recorded for ${chapterTitle(chapter.chapter)}.`);
+  renderCompletedChapters();
+}
+
+function deleteChapter(id) {
+  if(!confirm("Remove this chapter from your tracker?")) return;
+  db.chapters = db.chapters.filter(c=>c.id!==id);
+  saveDB();
+  renderAll();
+}
+
+function renderCompletedChapters() {
+  const list = Array.isArray(db.chapters) ? db.chapters.slice() : [];
+  const subject = document.getElementById("completedChapterSubjectFilter")?.value || "";
+  const className = document.getElementById("completedChapterClassFilter")?.value || "";
+  const status = document.getElementById("completedChapterStatusFilter")?.value || "";
+  const filtered = list.filter(c=>(!subject||c.subject===subject)&&(!className||c.className===className)&&(!status||c.status===status)).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+
+  const total = list.length;
+  const completed = list.filter(c=>c.status==="COMPLETED").length;
+  const inProgress = list.filter(c=>c.status!=="COMPLETED").length;
+  const revisions = list.reduce((n,c)=>n+(Number(c.revisions)||0),0);
+  document.getElementById("chapterTotal").textContent=total;
+  document.getElementById("chapterCompleted").textContent=completed;
+  document.getElementById("chapterInProgress").textContent=inProgress;
+  document.getElementById("chapterRevisions").textContent=revisions;
+
+  const container=document.getElementById("completedChaptersList");
+  if(!filtered.length){
+    container.innerHTML=`<div class="card empty" style="grid-column:1/-1"><div class="emoji">📚</div><h3>No chapters tracked yet</h3><p>Add a chapter to start tracking completion and revisions.</p></div>`;
+    return;
+  }
+  container.innerHTML=filtered.map(c=>{
+    const topics=syllabus[c.subject]?.[c.chapter]||[];
+    return `<div class="card chapter-card">
+      <div class="task-top"><div><div class="subject">CLASS ${escapeHTML(c.className)} • ${escapeHTML(c.subject).toUpperCase()}</div><h3>${escapeHTML(chapterTitle(c.chapter))}</h3></div><span class="badge ${c.status==="COMPLETED"?"priority-high":""}">${c.status==="COMPLETED"?"✓ COMPLETED":"◷ IN PROGRESS"}</span></div>
+      <div class="chapter-meta"><strong>Started:</strong> ${formatDate(c.startedAt)}<br><strong>Completed:</strong> ${c.completedAt?formatDate(c.completedAt):"Not completed"}<br><strong>Revisions:</strong> ${c.revisions||0}</div>
+      <div class="badges">${topics.map(t=>`<span class="badge">${escapeHTML(t)}</span>`).join("")}</div>
+      ${c.notes?`<div class="chapter-meta" style="margin-top:8px"><strong>Notes:</strong> ${escapeHTML(c.notes)}</div>`:""}
+      <div class="task-actions"><button class="btn btn-primary" onclick="reviseChapter('${c.id}')">+ REVISION</button><button class="btn btn-secondary" onclick="openChapterForm('${c.id}')">EDIT</button><button class="btn btn-secondary" onclick="deleteChapter('${c.id}')">REMOVE</button></div>
+    </div>`;
+  }).join("");
+}
+
+/* =========================================================
+   COMPLETED BACKLOG
+   ========================================================= */
+
+function renderCompletedBacklog() {
+
+  const list = db.tasks
+    .filter(t => t.status === "COMPLETED_BACKLOG")
+    .sort((a,b) => b.completedAt-a.completedAt);
+
+  const container =
+    document.getElementById("completedBacklogList");
+
+  if(!list.length) {
+    container.innerHTML = `
+      <div class="card empty">
+        <div class="emoji">🛡️</div>
+        <h3>No backlog recovered yet</h3>
+        <p>Clear your first backlog mission and it will appear here.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = list.map(task => `
+    <div class="card backlog-card" style="border-left-color:var(--green)">
+      <div class="subject" style="color:#63e28b">
+        🔥 COMPLETED BACKLOG
+      </div>
+
+      <h3>${escapeHTML(task.title)}</h3>
+
+      <div class="task-meta">
+        ${escapeHTML(task.subject)}
+        ${task.chapter ? " → " + escapeHTML(task.chapter) : ""}
+        ${task.topic ? " → " + escapeHTML(task.topic) : ""}
+      </div>
+
+      <div class="badges">
+        <span class="badge">${escapeHTML(task.taskType)}</span>
+        <span class="badge">Retries: ${task.retryCount || 0}</span>
+        <span class="badge" style="color:#6ee7a0">
+          +${task.xpAwarded || 50} XP
+        </span>
+      </div>
+
+      <div class="task-meta">
+        Original deadline:
+        ${task.history?.find(h=>h.event==="EXPIRED")
+          ? formatDate(task.history.find(h=>h.event==="EXPIRED").timestamp)
+          : "N/A"}
+      </div>
+
+      <div class="task-meta" style="margin-top:5px">
+        Final completion:
+        ${formatDate(task.completedAt)}
+      </div>
+
+      <div class="task-actions">
+        <button class="btn btn-secondary"
+          onclick="showTaskDetails('${task.id}')">
+          VIEW HISTORY
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* =========================================================
+   SUBJECT PROGRESS
+   ========================================================= */
+
+function renderSubjectProgress() {
+
+  const container = document.getElementById("subjectProgress");
+
+  const subjects = ["Physics","Chemistry","Mathematics"];
+
+  container.innerHTML = subjects.map(subject => {
+
+    const all = db.tasks.filter(t => t.subject === subject);
+
+    const completed =
+      all.filter(t =>
+        t.status === "COMPLETED" ||
+        t.status === "COMPLETED_BACKLOG"
+      ).length;
+
+    const percentage =
+      all.length ? Math.round(completed/all.length*100) : 0;
+
+    return `
+      <div class="card subject-card">
+        <div class="subject-head">
+          <strong>${subject}</strong>
+          <span>${percentage}%</span>
+        </div>
+
+        <div class="progress">
+          <div class="progress-fill" style="width:${percentage}%"></div>
+        </div>
+
+        <div class="stat-sub" style="margin-top:8px">
+          ${completed} completed / ${all.length} tracked
+        </div>
+      </div>
+    `;
+
+  }).join("");
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+function renderStats() {
+
+  const all = db.tasks;
+
+  const completed =
+    all.filter(t =>
+      t.status === "COMPLETED" ||
+      t.status === "COMPLETED_BACKLOG"
+    ).length;
+
+  const missed =
+    all.filter(t => (t.missedCount || 0) > 0).length;
+
+  const rate =
+    all.length ? Math.round(completed/all.length*100) : 0;
+
+  document.getElementById("statTotal").textContent = all.length;
+  document.getElementById("statCompleted").textContent = completed;
+  document.getElementById("statMissed").textContent = missed;
+  document.getElementById("statRate").textContent = rate + "%";
+
+  renderWeeklyChart();
+  renderSubjectStats();
+  renderTypeStats();
+}
+
+function renderWeeklyChart() {
+
+  const container = document.getElementById("weeklyChart");
+  const days = [];
+
+  for(let i=6;i>=0;i--) {
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate()-i);
+
+    const key = dateKey(d);
+    const count = db.tasks.filter(t =>
+      t.completedAt && dateKey(t.completedAt) === key
+    ).length;
+
+    days.push({
+      label:d.toLocaleDateString("en-IN",{weekday:"short"}),
+      count
+    });
+  }
+
+  const max = Math.max(...days.map(x=>x.count),1);
+
+  container.innerHTML = days.map(d => `
+    <div class="bar-column">
+      <div style="font-size:11px;color:var(--muted)">
+        ${d.count}
+      </div>
+      <div class="bar" style="height:${Math.max(3,d.count/max*75)}%"></div>
+      <div class="bar-label">${d.label}</div>
+    </div>
+  `).join("");
+}
+
+function renderSubjectStats() {
+
+  const subjects = ["Physics","Chemistry","Mathematics"];
+
+  document.getElementById("subjectStats").innerHTML =
+    subjects.map(subject => {
+
+      const tasks = db.tasks.filter(t => t.subject === subject);
+
+      const completed =
+        tasks.filter(t =>
+          t.status === "COMPLETED" ||
+          t.status === "COMPLETED_BACKLOG"
+        );
+
+      const missed =
+        tasks.filter(t => (t.missedCount || 0) > 0).length;
+
+      const rate =
+        tasks.length
+          ? Math.round(completed.length/tasks.length*100)
+          : 0;
+
+      const xp =
+        completed.reduce((s,t)=>s+(t.xpAwarded||0),0);
+
+      const backlog =
+        tasks.filter(t=>t.status==="BACKLOG").length;
+
+      return `
+        <tr>
+          <td>${subject}</td>
+          <td>${completed.length}</td>
+          <td>${missed}</td>
+          <td>${rate}%</td>
+          <td>${xp}</td>
+          <td>${backlog}</td>
+        </tr>
+      `;
+    }).join("");
+}
+
+function renderTypeStats() {
+
+  document.getElementById("typeStats").innerHTML =
+    taskTypes.map(type => {
+
+      const tasks = db.tasks.filter(t => t.taskType === type);
+
+      const completed =
+        tasks.filter(t =>
+          t.status==="COMPLETED" ||
+          t.status==="COMPLETED_BACKLOG"
+        ).length;
+
+      const missed =
+        tasks.filter(t=>(t.missedCount||0)>0).length;
+
+      const rate =
+        tasks.length
+          ? Math.round(completed/tasks.length*100)
+          : 0;
+
+      return `
+        <tr>
+          <td>${type}</td>
+          <td>${completed}</td>
+          <td>${missed}</td>
+          <td>${rate}%</td>
+        </tr>
+      `;
+    }).join("");
+}
+
+/* =========================================================
+   LEVEL-UP / BADGE POPUPS
+   ========================================================= */
+
+const progressionPopupQueue = [];
+let progressionPopupShowing = false;
+
+function showProgressionPopup(kind,data) {
+  // Queue progression popups. This is important because a task completion
+  // popup may already be open when XP causes a level-up or badge unlock.
+  progressionPopupQueue.push({kind,data});
+  showNextProgressionPopup();
+}
+
+function showNextProgressionPopup() {
+  if(progressionPopupShowing || document.getElementById("modal").classList.contains("open")) return;
+  const next = progressionPopupQueue.shift();
+  if(!next) return;
+
+  progressionPopupShowing = true;
+  const {kind,data} = next;
+  document.getElementById("modalTitle").textContent = kind === "level" ? "🎉 LEVEL UP!" : "🏆 NEW BADGE!";
+  document.getElementById("modalContent").innerHTML = `
+    <div style="text-align:center;padding:28px 10px">
+      <div style="font-size:70px;animation:bounce .7s ease">${kind === "level" ? "⬆️" : data.icon}</div>
+      <h2 style="margin:10px 0">${kind === "level" ? `You reached Level ${data.level}!` : escapeHTML(data.name)}</h2>
+      <p style="color:var(--muted)">${kind === "level" ? `Keep building momentum. You have earned ${totalXP()} XP.` : escapeHTML(data.description)}</p>
+      <button class="btn btn-primary" onclick="closeModal()">CONTINUE →</button>
+    </div>
+    <style>@keyframes bounce{50%{transform:scale(1.25)}}</style>`;
+  document.getElementById("modal").classList.add("open");
+}
+
+function announceLevelIfNeeded() {
+  if(!db.progression) db.progression={initialized:false,lastLevel:1};
+  const level=levelFromXP(totalXP()).level;
+  if(!db.progression.initialized) {
+    db.progression.initialized=true;
+    db.progression.lastLevel=level;
+    saveDB();
+    return;
+  }
+  if(level > Number(db.progression.lastLevel||1)) {
+    db.progression.lastLevel=level;
+    saveDB();
+    setTimeout(()=>showProgressionPopup("level",{level}),120);
+  } else if(level < Number(db.progression.lastLevel||1)) {
+    db.progression.lastLevel=level;
+    saveDB();
+  }
+}
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+function achievementStats() {
+
+  const completed =
+    db.tasks.filter(t =>
+      t.status==="COMPLETED" ||
+      t.status==="COMPLETED_BACKLOG"
+    );
+
+  return {
+    completed:completed.length,
+
+    completedBacklog:
+      db.tasks.filter(t=>t.status==="COMPLETED_BACKLOG").length,
+
+    longestStreak:getLongestStreak(),
+
+    speedSolver:
+      db.tasks.some(t=>t.speedSolver),
+
+    pyq:
+      completed.filter(t=>t.taskType==="PYQ").length,
+
+    revision:
+      completed.filter(t=>t.taskType==="Revision").length
+  };
+}
+
+function checkAchievements() {
+
+  const stats = achievementStats();
+
+  achievements.forEach(a => {
+
+    if(a.check(stats) && !db.achievements.includes(a.id)) {
+
+      db.achievements.push(a.id);
+
+      toast(`🏆 Achievement unlocked: ${a.name}`);
+      setTimeout(()=>showProgressionPopup("badge",a),180);
+    }
+
+  });
+
+  saveDB();
+}
+
+function renderAchievements() {
+
+  const stats = achievementStats();
+
+  document.getElementById("achievementGrid").innerHTML =
+    achievements.map(a => {
+
+      const unlocked = db.achievements.includes(a.id);
+
+      return `
+        <div class="card achievement ${unlocked ? "" : "locked"}">
+          <div class="achievement-icon">${a.icon}</div>
+          <h3>${a.name}</h3>
+          <p>${a.description}</p>
+
+          <div style="margin-top:15px;font-size:11px;font-weight:800">
+            ${unlocked ? "✓ UNLOCKED" : "🔒 LOCKED"}
+          </div>
+        </div>
+      `;
+    }).join("");
+}
+
+/* =========================================================
+   TASK DETAILS
+   ========================================================= */
+
+function showTaskDetails(id) {
+
+  const task = db.tasks.find(t => t.id === id);
+
+  if(!task) return;
+
+  document.getElementById("modalTitle").textContent =
+    task.title;
+
+  const history = (task.history || [])
+    .slice()
+    .sort((a,b)=>b.timestamp-a.timestamp);
+
+  document.getElementById("modalContent").innerHTML = `
+
+    <div class="badges">
+      <span class="badge">${escapeHTML(task.subject)}</span>
+      <span class="badge">${escapeHTML(task.taskType)}</span>
+      <span class="badge">${escapeHTML(task.priority)}</span>
+    </div>
+
+    <p style="color:var(--muted)">
+      ${escapeHTML(task.description || "No description provided.")}
+    </p>
+
+    <div class="card card-pad" style="margin-top:15px">
+      <strong>Chapter</strong>
+      <div class="task-meta">${escapeHTML(task.chapter || "Not specified")}</div>
+
+      <br>
+
+      <strong>Topic</strong>
+      <div class="task-meta">${escapeHTML(task.topic || "Not specified")}</div>
+
+      <br>
+
+      <strong>Created</strong>
+      <div class="task-meta">${formatDate(task.createdAt)}</div>
+
+      <br>
+
+      <strong>Deadline</strong>
+      <div class="task-meta">
+        ${task.deadline ? formatDate(task.deadline) : "Direct backlog"}
+      </div>
+
+      <br>
+
+      <strong>Status</strong>
+      <div class="task-meta">${task.status}</div>
+
+      <br>
+
+      <strong>XP Awarded</strong>
+      <div class="task-meta">${task.xpAwarded || 0} XP</div>
+
+      <br>
+
+      <strong>Missed</strong>
+      <div class="task-meta">${task.missedCount || 0}</div>
+
+      <br>
+
+      <strong>Retries</strong>
+      <div class="task-meta">${task.retryCount || 0}</div>
+    </div>
+
+    <h3 style="margin-top:25px">History</h3>
+
+    <div>
+      ${history.map(h => `
+        <div style="
+          padding:10px 0;
+          border-bottom:1px solid var(--border);
+          font-size:13px;
+        ">
+          <strong>${escapeHTML(h.event)}</strong>
+          <div style="color:var(--muted)">
+            ${formatDate(h.timestamp)}
+            ${h.xp ? ` • ${h.xp} XP` : ""}
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+
+  if(progressionPopupShowing) {
+    progressionPopupShowing = false;
+  }
+
+  // Give the just-closed popup a moment to disappear, then show the next
+  // queued level-up/badge popup. This guarantees one-at-a-time presentation.
+  if(progressionPopupQueue.length) {
+    setTimeout(showNextProgressionPopup, 80);
+  }
+}
+
+/* =========================================================
+   COMPLETION ANIMATION
+   ========================================================= */
+
+function getDoubtMode(task) {
+  const type = String(task?.taskType || "").toLowerCase();
+
+  // Explicit task types take priority. Existing task types are also mapped
+  // so older tasks continue to get the appropriate doubt option.
+  if(type === "theory" || ["lecture","notes","formula revision","revision"].includes(type)) {
+    return "theory";
+  }
+
+  if(type === "problem solving" || ["practice","homework","pyq","dpp","mock test"].includes(type)) {
+    return "problem";
+  }
+
+  return "theory";
+}
+
+function showCompletion(task,xp,isBacklog) {
+  document.getElementById("modalTitle").textContent =
+    isBacklog ? "🔥 BACKLOG CLEARED!" : "🎉 TASK COMPLETE!";
+
+  const doubtMode = getDoubtMode(task);
+  const isTheory = doubtMode === "theory";
+  const isMock = String(task?.taskType || "").toLowerCase() === "mock test";
+
+  const doubtCard = isBacklog ? `
+    <div class="card card-pad" style="margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <div><strong>Did you have a doubt?</strong><div class="stat-sub">Optional. Save it and earn XP only when you resolve it.</div></div>
+        <span class="badge">OPTIONAL</span>
+      </div>
+      <p class="stat-sub" style="margin-top:12px">Backlog completion gives <span class="gold">+${xp} XP</span>. Doubt XP is awarded only after the doubt is marked resolved.</p>
+      <button class="btn btn-secondary" style="margin-top:10px" onclick="showDoubtForm('${task.id}')">ADD DOUBT</button>
+    </div>
+  ` : `
+    <div class="card card-pad" style="margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <div>
+          <strong>${isTheory ? "Any theoretical doubt?" : "Any question doubts?"}</strong>
+          <div class="stat-sub">Optional. ${isTheory ? "Resolve the theoretical doubt to earn +20 XP." : "Resolve each question doubt to earn +7.5 XP."}</div>
+        </div>
+        <span class="badge">${isTheory ? "THEORY • +20 XP" : "PROBLEM • +7.5 XP EACH"}</span>
+      </div>
+      <div class="task-actions" style="margin-top:12px">
+        <button class="btn btn-secondary" onclick="showDoubtForm('${task.id}')">ADD ${isTheory ? "THEORETICAL" : "QUESTION"} DOUBT</button>
+      </div>
+    </div>
+  `;
+
+  const mockCard = isMock ? `
+    <div class="card card-pad" style="margin-top:20px">
+      <strong>Record Mock Test Result</strong>
+      <div class="stat-sub" style="margin-top:4px">Choose where the test belongs and enter the full result. This is saved in Test Analytics.</div>
+      <div class="form-grid" style="margin-top:12px">
+        <div class="field"><label>Test Section *</label><select id="mockCategoryCompletion"><option value="coaching">Coaching Test</option><option value="home">Home Test</option></select></div>
+        <div class="field"><label>Exam / Test Type *</label><select id="mockTypeCompletion"><option>Normal Mock Test</option><option>JEE Main</option><option>JEE Advanced</option><option>Practice Test</option></select></div>
+        <div class="field"><label>Marks *</label><input id="mockMarksCompletion" type="number" step="0.01" min="0" placeholder="e.g. 172"></div>
+        <div class="field"><label>Total Marks</label><input id="mockTotalMarksCompletion" type="number" step="0.01" min="1" placeholder="e.g. 300"></div>
+        <div class="field"><label>Rank *</label><input id="mockRankCompletion" type="number" min="1" step="1" placeholder="e.g. 1250"></div>
+        <div class="field"><label>Attempted</label><input id="mockAttemptedCompletion" type="number" min="0" step="1"></div>
+        <div class="field"><label>Correct</label><input id="mockCorrectCompletion" type="number" min="0" step="1"></div>
+        <div class="field"><label>Wrong</label><input id="mockWrongCompletion" type="number" min="0" step="1"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveMockResultFromCompletion('${task.id}')">SAVE COMPLETE RESULT</button>
+    </div>` : '';
+
+  document.getElementById("modalContent").innerHTML = `
+    <div style="padding:25px 10px">
+      <div style="text-align:center">
+        <div style="font-size:65px;animation:bounce .7s ease">${isBacklog ? "🔥" : "🎉"}</div>
+        <h2>${isBacklog ? "BACKLOG CLEARED!" : "TASK COMPLETE!"}</h2>
+        <div style="font-size:38px;font-weight:900;color:var(--gold);margin:15px">+${xp} XP</div>
+        <p style="color:var(--muted)">${isBacklog ? `You recovered this task after ${task.retryCount || 0} retries.` : "Your 24-hour commitment is complete."}</p>
+      </div>
+      ${doubtCard}
+      ${mockCard}
+      <div class="task-actions" style="justify-content:center;margin-top:20px">
+        <button class="btn btn-primary" onclick="closeModal()">${isMock ? "FINISH & CLOSE →" : "DONE →"}</button>
+      </div>
+    </div>
+    <style>@keyframes bounce{50%{transform:scale(1.25)}}</style>
+  `;
+  document.getElementById("modal").classList.add("open");
+}
+
+function updateQuestionDoubtXP() {
+  const input = document.getElementById("completionDoubtCount");
+  const out = document.getElementById("questionDoubtXP");
+  if(!input || !out) return;
+  const count = Math.max(1, Math.min(100, parseInt(input.value,10) || 1));
+  input.value = count;
+  const xp = count * 7.5;
+  out.textContent = `${count} question doubt${count === 1 ? "" : "s"} = +${xp} XP`;
+}
+
+function showDoubtForm(taskId) {
+  const task = db.tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  const mode = getDoubtMode(task);
+  const isTheory = mode === "theory";
+
+  document.getElementById("modalTitle").textContent = isTheory ? "📚 THEORETICAL DOUBT" : "❓ QUESTION DOUBTS";
+  document.getElementById("modalContent").innerHTML = `
+    <div class="card card-pad">
+      <div class="stat-sub" style="margin-bottom:12px">${escapeHTML(task.title)}</div>
+      ${isTheory ? `
+        <div class="field">
+          <label>Theoretical doubt *</label>
+          <textarea id="completionDoubt" style="min-height:120px" placeholder="What concept, theory, derivation or explanation is unclear?"></textarea>
+        </div>
+        <div class="stat-sub">🏆 Reward: <strong class="gold">+20 XP</strong> when you mark this doubt as resolved.</div>
+      ` : `
+        <div class="field">
+          <label>Question numbers *</label>
+          <input id="completionQuestionNumbers" placeholder="e.g. 3, 7, 12, 18">
+          <div class="stat-sub" style="margin-top:6px">Enter the question numbers you are stuck on, separated by commas.</div>
+        </div>
+        <div class="field">
+          <label>What are you stuck on? *</label>
+          <textarea id="completionDoubt" style="min-height:100px" placeholder="Briefly write what is confusing in these questions..."></textarea>
+        </div>
+        <div class="stat-sub">🏆 Reward: <strong class="gold">+7.5 XP per resolved question</strong>.</div>
+      `}
+      <div class="task-actions">
+        <button class="btn btn-secondary" onclick="showCompletion(db.tasks.find(t=>t.id==='${task.id}'), ${task.xpAwarded||0}, ${task.source==='BACKLOG'})">BACK</button>
+        <button class="btn btn-primary" onclick="saveDoubtFromCompletion('${task.id}')">SAVE DOUBT</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveDoubtFromCompletion(taskId) {
+  const task = db.tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  const input = document.getElementById("completionDoubt");
+  const text = input?.value.trim();
+  if(!text) {
+    toast("Write your doubt first, or close the popup if you have none.");
+    return;
+  }
+
+  const mode = getDoubtMode(task);
+  const isTheory = mode === "theory";
+  let questionNumbers = [];
+  let count = 1;
+
+  if(!isTheory) {
+    questionNumbers = (document.getElementById("completionQuestionNumbers")?.value || "")
+      .split(",").map(x=>x.trim()).filter(Boolean);
+    if(!questionNumbers.length) {
+      toast("Enter at least one question number.");
+      return;
+    }
+    count = questionNumbers.length;
+  }
+
+  const now = Date.now();
+  const doubt = {
+    id:crypto.randomUUID ? crypto.randomUUID() : String(now),
+    taskId,
+    taskTitle:task.title || "Completed task",
+    subject:task.subject || "",
+    chapter:task.chapter || "",
+    topic:task.topic || "",
+    text,
+    doubtType:isTheory ? "THEORETICAL" : "QUESTION",
+    questionCount:count,
+    questionNumbers,
+    createdAt:now,
+    resolved:false,
+    resolvedAt:null,
+    xpReward:isTheory ? 20 : count * 7.5,
+    xpAwarded:0
+  };
+
+  db.doubts.push(doubt);
+  if(task) {
+    if(!task.history) task.history=[];
+    task.history.push({event:"DOUBT_SAVED",timestamp:now,xp:0,doubtType:doubt.doubtType,questionCount:count,questionNumbers});
+  }
+  saveDB();
+  toast(`❓ Doubt saved. Resolve it later to earn +${doubt.xpReward} XP.`);
+  closeModal();
+  renderAll();
+}
+
+function saveMockResultFromCompletion(taskId) {
+  const task=db.tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  const category=document.getElementById("mockCategoryCompletion")?.value || "coaching";
+  const examType=document.getElementById("mockTypeCompletion")?.value || "Normal Mock Test";
+  const marks=Number(document.getElementById("mockMarksCompletion")?.value);
+  const totalMarks=Number(document.getElementById("mockTotalMarksCompletion")?.value) || null;
+  const rank=Number(document.getElementById("mockRankCompletion")?.value);
+  const attempted=Number(document.getElementById("mockAttemptedCompletion")?.value) || null;
+  const correct=Number(document.getElementById("mockCorrectCompletion")?.value) || null;
+  const wrong=Number(document.getElementById("mockWrongCompletion")?.value) || null;
+  if(!examType || !Number.isFinite(marks) || marks<0 || !Number.isFinite(rank) || rank<1) {
+    toast("Enter valid marks and rank."); return;
+  }
+  const now=Date.now();
+  db.mockTests.push({id:crypto.randomUUID?crypto.randomUUID():String(now),taskId,taskTitle:task.title,type:examType,category,marks,totalMarks,rank,attempted,correct,wrong,date:now,subject:task.subject||"",chapter:task.chapter||"",topic:task.topic||"",source:"COMPLETED_TASK"});
+  if(!task.history) task.history=[];
+  task.history.push({event:"MOCK_RESULT_SAVED",timestamp:now,category,examType,marks,totalMarks,rank});
+  saveDB(); toast(`📝 ${examType} result saved.`); renderAll();
+}
+
+function resolveDoubt(id) {
+  const doubt=db.doubts.find(d=>d.id===id);
+  if(!doubt) return;
+  if(!doubt.resolved) {
+    doubt.resolved=true;
+    doubt.resolvedAt=Date.now();
+    const reward=Number(doubt.xpReward || (doubt.doubtType==="THEORETICAL" ? 20 : (Number(doubt.questionCount)||1)*7.5));
+    if(!doubt.xpAwarded) {
+      doubt.xpAwarded=reward;
+      addXP(reward,`Resolved ${doubt.doubtType==="THEORETICAL"?"theoretical":"question"} doubt`,doubt.taskId);
+      announceLevelIfNeeded();
+      checkAchievements();
+    }
+    saveDB();
+    toast(`✅ Doubt resolved • +${reward} XP`);
+  } else {
+    doubt.resolved=false;
+    doubt.resolvedAt=null;
+    saveDB();
+    toast("↩️ Doubt reopened. XP is not removed.");
+  }
+  renderDoubts();
+  renderMockTests();
+}
+
+function deleteDoubt(id) {
+  if(!confirm("Delete this doubt?")) return;
+  db.doubts=db.doubts.filter(d=>d.id!==id);
+  saveDB();
+  renderDoubts();
+}
+
+function renderDoubts() {
+  const list=Array.isArray(db.doubts)?db.doubts.slice().sort((a,b)=>b.createdAt-a.createdAt):[];
+  const open=list.filter(d=>!d.resolved).length;
+  const resolved=list.filter(d=>d.resolved).length;
+  const xp=list.reduce((sum,d)=>sum+(Number(d.xpAwarded)||0),0);
+  document.getElementById("doubtTotal").textContent=list.length;
+  document.getElementById("doubtOpen").textContent=open;
+  document.getElementById("doubtResolved").textContent=resolved;
+  document.getElementById("doubtXP").textContent=xp;
+
+  const container=document.getElementById("doubtsList");
+  if(!list.length) {
+    container.innerHTML=`<div class="card empty" style="grid-column:1/-1"><div class="emoji">❓</div><h3>No doubts saved yet</h3><p>Complete a task and optionally write down anything you still want to understand.</p></div>`;
+    return;
+  }
+
+  container.innerHTML=list.map(d=>`
+    <div class="card task ${d.resolved?"":"warning"}">
+      <div class="task-top">
+        <div>
+          <div class="subject">${escapeHTML(d.subject || "GENERAL")}</div>
+          <h3>${escapeHTML(d.text)}</h3>
+        </div>
+        <span class="badge ${d.resolved?"priority-high":"priority-urgent"}">${d.resolved?"✓ RESOLVED":"OPEN"}</span>
+      </div>
+      <div class="task-meta">${escapeHTML(d.taskTitle || "Completed task")}${d.chapter?" • "+escapeHTML(d.chapter):""}${d.topic?" • "+escapeHTML(d.topic):""}</div>
+      ${d.questionNumbers?.length ? `<div class="badges"><span class="badge">Questions: ${escapeHTML(d.questionNumbers.join(", "))}</span></div>` : ""}
+      <div class="badges"><span class="badge gold">${d.resolved?`+${Number(d.xpAwarded)||0} XP earned`:`+${Number(d.xpReward)||0} XP when resolved`}</span><span class="badge">${formatDate(d.createdAt)}</span></div>
+      <div class="task-actions">
+        <button class="btn ${d.resolved?"btn-secondary":"btn-green"}" onclick="resolveDoubt('${d.id}')">${d.resolved?"REOPEN":"MARK RESOLVED"}</button>
+        <button class="btn btn-secondary" onclick="deleteDoubt('${d.id}')">DELETE</button>
+      </div>
+    </div>`).join("");
+}
+
+function setMockTab(tab){
+  db.mockTab=tab; saveDB();
+  document.querySelectorAll("[data-mock-tab]").forEach(b=>b.classList.toggle("active",b.dataset.mockTab===tab));
+  renderMockTests();
+}
+function mockCategory(m){ return String(m.category||"coaching").toLowerCase(); }
+function mockExam(m){ return String(m.type||"").toLowerCase(); }
+function mockIsCompleted(m){ return Number.isFinite(Number(m.marks)) && Number.isFinite(Number(m.rank)); }
+function mockFilter(list,tab){
+  if(tab==="coaching") return list.filter(m=>mockCategory(m)==="coaching");
+  if(tab==="home") return list.filter(m=>mockCategory(m)==="home");
+  if(tab==="mains") return list.filter(m=>mockExam(m).includes("main"));
+  if(tab==="advanced") return list.filter(m=>mockExam(m).includes("advanced"));
+  return list;
+}
+function average(arr,key){ const vals=arr.map(x=>Number(x[key])).filter(Number.isFinite); return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null; }
+function testCard(m){
+  const pct=Number(m.totalMarks)>0 ? (Number(m.marks)/Number(m.totalMarks)*100).toFixed(1)+"%" : "—";
+  return `<div class="card mock-card">
+    <div class="task-top"><div><div class="subject">${escapeHTML(m.category==="home"?"HOME TEST":"COACHING TEST")} • ${escapeHTML(m.type||"TEST")}</div><h3>${escapeHTML(m.taskTitle||"Recorded Test")}</h3></div><span class="badge gold">RANK ${escapeHTML(String(m.rank))}</span></div>
+    <div class="mock-result-grid"><span class="badge blue">${escapeHTML(String(m.marks))}${m.totalMarks?` / ${escapeHTML(String(m.totalMarks))}`:""} MARKS</span><span class="badge green">${pct}</span><span class="badge">${formatDate(m.date)}</span></div>
+    <div class="mock-mini" style="margin-top:10px">${m.subject?escapeHTML(m.subject)+" • ":""}${m.chapter?escapeHTML(m.chapter):""}${m.topic?" • "+escapeHTML(m.topic):""}</div>
+    <div class="mock-mini" style="margin-top:6px">Attempted: ${m.attempted??"—"} • Correct: ${m.correct??"—"} • Wrong: ${m.wrong??"—"}</div>
+  </div>`;
+}
+function futureCard(m){
+  return `<div class="card mock-card"><div class="task-top"><div><div class="subject">${escapeHTML(m.category==="home"?"HOME TEST":"COACHING TEST")} • ${escapeHTML(m.type||"TEST")}</div><h3>${escapeHTML(m.title||"Scheduled Test")}</h3></div><span class="badge blue">UPCOMING</span></div><div class="mock-result-grid"><span class="badge">${escapeHTML(formatDate(m.date))}</span><span class="badge">${escapeHTML(m.time||"Time not set")}</span><span class="badge">${escapeHTML(m.totalMarks?"Total "+m.totalMarks+" marks":"Marks not set")}</span></div><div class="mock-mini" style="margin-top:10px">${escapeHTML(m.notes||"No notes added.")}</div><div class="task-actions"><button class="btn btn-secondary" onclick="deleteScheduledTest('${m.id}')">DELETE</button></div></div>`;
+}
+function renderMockTests(){
+  const all=(Array.isArray(db.mockTests)?db.mockTests:[]).filter(mockIsCompleted).sort((a,b)=>b.date-a.date);
+  const tab=db.mockTab||"all";
+  document.querySelectorAll("[data-mock-tab]").forEach(b=>b.classList.toggle("active",b.dataset.mockTab===tab));
+  const filtered=mockFilter(all,tab);
+  const avg=average(filtered,"marks"), avgRank=average(filtered,"rank");
+  const best=filtered.length?Math.max(...filtered.map(m=>Number(m.marks)||0)):0;
+  const scope=tab==="all"?"All completed tests":tab==="coaching"?"Coaching tests":tab==="home"?"Home tests":tab==="mains"?"JEE Main tests":tab==="advanced"?"JEE Advanced tests":"Filtered tests";
+  document.getElementById("mockTotal")?.setAttribute("data-value",String(filtered.length)); if(document.getElementById("mockTotal")) document.getElementById("mockTotal").textContent=filtered.length;
+  if(document.getElementById("mockAvg")) document.getElementById("mockAvg").textContent=avg==null?"0":avg.toFixed(1);
+  if(document.getElementById("mockAvgRank")) document.getElementById("mockAvgRank").textContent=avgRank==null?"—":avgRank.toFixed(0);
+  if(document.getElementById("mockBest")) document.getElementById("mockBest").textContent=best.toFixed(1).replace(/\.0$/,'');
+  if(document.getElementById("mockAvgScope")) document.getElementById("mockAvgScope").textContent=scope;
+  const pctVals=filtered.map(m=>Number(m.totalMarks)>0?Number(m.marks)/Number(m.totalMarks)*100:null).filter(Number.isFinite);
+  const avgPct=pctVals.length?pctVals.reduce((a,b)=>a+b,0)/pctVals.length:null;
+  const text=document.getElementById("mockAnalysisText");
+  if(text) text.innerHTML=filtered.length ? `<strong>${escapeHTML(scope)}</strong>: ${filtered.length} tests • Average marks <strong>${avg?.toFixed(1)}</strong> • Average rank <strong>${avgRank?.toFixed(0)}</strong> • Average score percentage <strong>${avgPct==null?"—":avgPct.toFixed(1)+"%"}</strong>. ${tab==="all"?"Use the tabs to compare coaching, Main, Advanced and home performance separately.":"Switch tabs to compare this group with the others."}` : "No completed tests in this section yet. Add a past test or complete a Mock Test task.";
+  const coaching=all.filter(m=>mockCategory(m)==="coaching");
+  const home=all.filter(m=>mockCategory(m)==="home");
+  const scheduled=(Array.isArray(db.scheduledTests)?db.scheduledTests:[]).filter(m=>new Date(m.date).getTime()>=Date.now()-86400000).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  document.getElementById("coachingTestsList").innerHTML=coaching.length?coaching.map(testCard).join(""):`<div class="card empty" style="grid-column:1/-1"><div class="emoji">🎓</div><h3>No coaching tests</h3><p>Add a past coaching test to start analysis.</p></div>`;
+  document.getElementById("homeTestsList").innerHTML=home.length?home.map(testCard).join(""):`<div class="card empty" style="grid-column:1/-1"><div class="emoji">🏠</div><h3>No home tests</h3><p>Add a past home test to track it separately.</p></div>`;
+  document.getElementById("mockTestsList").innerHTML=filtered.length?filtered.map(testCard).join(""):`<div class="card empty" style="grid-column:1/-1"><div class="emoji">📝</div><h3>No tests in this view</h3><p>Add or complete a test to see it here.</p></div>`;
+  document.getElementById("futureTestsList").innerHTML=scheduled.length?scheduled.map(futureCard).join(""):`<div class="card empty" style="grid-column:1/-1"><div class="emoji">📅</div><h3>No future tests scheduled</h3><p>Use Schedule Future Test to plan your next test.</p></div>`;
+}
+function openPastTestForm(){
+  document.getElementById("modalTitle").textContent="➕ Add Past Test";
+  document.getElementById("modalContent").innerHTML=`<div class="card card-pad"><div class="form-grid">
+    <div class="field full"><label>Test Name *</label><input id="pastTestTitle" placeholder="Allen Major Test 01" required></div>
+    <div class="field"><label>Section *</label><select id="pastCategory"><option value="coaching">Coaching Test</option><option value="home">Home Test</option></select></div>
+    <div class="field"><label>Exam / Test Type *</label><select id="pastType"><option>Normal Mock Test</option><option>JEE Main</option><option>JEE Advanced</option><option>Practice Test</option></select></div>
+    <div class="field"><label>Test Date *</label><input id="pastDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="field"><label>Marks *</label><input id="pastMarks" type="number" step="0.01" min="0"></div>
+    <div class="field"><label>Total Marks</label><input id="pastTotal" type="number" step="0.01" min="1"></div>
+    <div class="field"><label>Rank *</label><input id="pastRank" type="number" min="1" step="1"></div>
+    <div class="field"><label>Attempted</label><input id="pastAttempted" type="number" min="0"></div>
+    <div class="field"><label>Correct</label><input id="pastCorrect" type="number" min="0"></div>
+    <div class="field"><label>Wrong</label><input id="pastWrong" type="number" min="0"></div>
+    <div class="field full"><label>Analysis / Notes</label><textarea id="pastNotes" placeholder="Weak chapters, mistakes, time management, next action..."></textarea></div>
+  </div><div class="task-actions"><button class="btn btn-secondary" onclick="closeModal()">CANCEL</button><button class="btn btn-primary" onclick="savePastTest()">SAVE TEST</button></div></div>`;
+  document.getElementById("modal").classList.add("open");
+}
+function savePastTest(){
+  const title=document.getElementById("pastTestTitle")?.value.trim(); const marks=Number(document.getElementById("pastMarks")?.value); const rank=Number(document.getElementById("pastRank")?.value);
+  if(!title||!Number.isFinite(marks)||marks<0||!Number.isFinite(rank)||rank<1){toast("Enter test name, marks and rank.");return;}
+  const date=new Date(document.getElementById("pastDate").value||Date.now()).getTime();
+  db.mockTests.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),taskId:null,taskTitle:title,type:document.getElementById("pastType").value,category:document.getElementById("pastCategory").value,marks,totalMarks:Number(document.getElementById("pastTotal").value)||null,rank,attempted:Number(document.getElementById("pastAttempted").value)||null,correct:Number(document.getElementById("pastCorrect").value)||null,wrong:Number(document.getElementById("pastWrong").value)||null,date,notes:document.getElementById("pastNotes").value.trim(),source:"PAST_TEST"});
+  saveDB(); closeModal(); toast("✅ Past test recorded."); renderAll(); navigate("mocks");
+}
+function openFutureTestForm(){
+  document.getElementById("modalTitle").textContent="📅 Schedule Future Test";
+  document.getElementById("modalContent").innerHTML=`<div class="card card-pad"><div class="form-grid">
+    <div class="field full"><label>Test Name *</label><input id="futureTitle" placeholder="Allen Major Test 02"></div>
+    <div class="field"><label>Section *</label><select id="futureCategory"><option value="coaching">Coaching Test</option><option value="home">Home Test</option></select></div>
+    <div class="field"><label>Exam / Test Type *</label><select id="futureType"><option>Normal Mock Test</option><option>JEE Main</option><option>JEE Advanced</option><option>Practice Test</option></select></div>
+    <div class="field"><label>Date *</label><input id="futureDate" type="date"></div>
+    <div class="field"><label>Time</label><input id="futureTime" type="time"></div>
+    <div class="field"><label>Total Marks</label><input id="futureTotal" type="number" min="1"></div>
+    <div class="field full"><label>Plan / Notes</label><textarea id="futureNotes" placeholder="Syllabus, target score, strategy..."></textarea></div>
+  </div><div class="task-actions"><button class="btn btn-secondary" onclick="closeModal()">CANCEL</button><button class="btn btn-primary" onclick="saveFutureTest()">SCHEDULE TEST</button></div></div>`;
+  document.getElementById("modal").classList.add("open");
+}
+function saveFutureTest(){
+  const title=document.getElementById("futureTitle")?.value.trim(), date=document.getElementById("futureDate")?.value;
+  if(!title||!date){toast("Enter a test name and date.");return;}
+  db.scheduledTests.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title,category:document.getElementById("futureCategory").value,type:document.getElementById("futureType").value,date:new Date(date+"T"+(document.getElementById("futureTime").value||"09:00")).toISOString(),time:document.getElementById("futureTime").value||"09:00",totalMarks:Number(document.getElementById("futureTotal").value)||null,notes:document.getElementById("futureNotes").value.trim()});
+  saveDB(); closeModal(); toast("📅 Future test scheduled."); renderAll(); navigate("mocks");
+}
+function deleteScheduledTest(id){ if(!confirm("Delete this scheduled test?"))return; db.scheduledTests=db.scheduledTests.filter(x=>x.id!==id); saveDB(); renderMockTests(); }
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+function loadProfile() {
+
+  const p = db.profile;
+
+  document.getElementById("profileName").value = p.name || "";
+  document.getElementById("profileAvatar").value = p.avatar || "🚀";
+  const pfpInput = document.getElementById("profilePfp");
+  if(pfpInput) pfpInput.value = "";
+  document.getElementById("profileExam").value = p.exam || "JEE Main";
+  document.getElementById("profilePercentile").value = p.percentile || "";
+  document.getElementById("profileRank").value = p.rank || "";
+  document.getElementById("notifyEnabled").checked =
+    p.notifications !== false;
+
+  if(p.examDate) {
+
+    const date = new Date(p.examDate);
+
+    const offset = date.getTimezoneOffset();
+
+    const local = new Date(date.getTime()-offset*60000)
+      .toISOString()
+      .slice(0,16);
+
+    document.getElementById("profileExamDate").value = local;
+  }
+}
+
+document.getElementById("profileForm").addEventListener("submit",e => {
+
+  e.preventDefault();
+
+  db.profile.name =
+    document.getElementById("profileName").value.trim();
+
+  db.profile.avatar =
+    document.getElementById("profileAvatar").value.trim() || "🚀";
+
+  db.profile.exam =
+    document.getElementById("profileExam").value;
+
+  db.profile.examDate =
+    document.getElementById("profileExamDate").value;
+
+  db.profile.percentile =
+    document.getElementById("profilePercentile").value;
+
+  db.profile.rank =
+    document.getElementById("profileRank").value;
+
+  db.profile.notifications =
+    document.getElementById("notifyEnabled").checked;
+
+  const pfpFile = document.getElementById("profilePfp")?.files?.[0];
+  if(pfpFile) {
+    if(pfpFile.size > 2 * 1024 * 1024) {
+      toast("PFP should be 2 MB or smaller.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      db.profile.pfp = reader.result;
+      saveDB();
+      toast("✅ Profile picture saved.");
+      renderAll();
+    };
+    reader.readAsDataURL(pfpFile);
+  }
+
+  saveDB();
+
+  toast("✅ Profile saved.");
+  renderAll();
+});
+
+/* =========================================================
+   CLASS SETUP
+   ========================================================= */
+
+function getExamDateForClass(studentClass){
+  // User requested: 11th -> 5-1-28, 12th/Leader -> 5-1-27.
+  const year = studentClass === "11" ? 2028 : 2027;
+  return `${year}-01-05T09:00`;
+}
+
+function showClassSetup(){
+  const setup = document.getElementById("classSetup");
+  if(setup) setup.classList.remove("hidden");
+}
+
+function selectStudentClass(studentClass){
+  db.profile.studentClass = studentClass;
+  db.profile.examDate = getExamDateForClass(studentClass);
+  saveDB();
+  document.getElementById("classSetup")?.classList.add("hidden");
+  loadProfile();
+  renderAll();
+  toast(`✅ Class set: ${studentClass === "leader" ? "Leader" : studentClass + "th"} • Exam: 5 Jan ${studentClass === "11" ? "2028" : "2027"}`);
+}
+
+function ensureStudentClass(){
+  if(!db.profile.studentClass){
+    showClassSetup();
+  }
+}
+
+/* =========================================================
+   EXAM COUNTDOWN
+   ========================================================= */
+
+function renderExamCountdown() {
+
+  const date = db.profile.examDate;
+
+  if(!date) {
+
+    document.getElementById("examDays").textContent =
+      "-- DAYS";
+
+    document.getElementById("examCountdown").textContent =
+      "Set your exam date in Profile";
+
+    return;
+  }
+
+  const remaining = new Date(date).getTime() - Date.now();
+
+  if(remaining <= 0) {
+
+    document.getElementById("examDays").textContent =
+      "EXAM DAY";
+
+    document.getElementById("examCountdown").textContent =
+      "Your target date has arrived.";
+
+    return;
+  }
+
+  const days = Math.floor(remaining/(24*60*60*1000));
+
+  const hours =
+    Math.floor(remaining%(24*60*60*1000)/(60*60*1000));
+
+  const minutes =
+    Math.floor(remaining%(60*60*1000)/(60*1000));
+
+  document.getElementById("examDays").textContent =
+    `${days} DAYS`;
+
+  document.getElementById("examCountdown").textContent =
+    `${hours} HOURS • ${minutes} MINUTES REMAINING`;
+}
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function toggleTheme() {
+
+  document.body.classList.toggle("light");
+
+  db.theme =
+    document.body.classList.contains("light") ? "light" : "dark";
+
+  saveDB();
+}
+
+function loadTheme() {
+
+  if(db.theme === "light") {
+    document.body.classList.add("light");
+  }
+}
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+function notify(title,body) {
+
+  if(!db.profile.notifications) return;
+
+  if("Notification" in window &&
+     Notification.permission === "granted") {
+
+    new Notification(title,{body});
+  }
+}
+
+async function requestNotifications() {
+
+  if(!("Notification" in window)) {
+    toast("Browser notifications are not supported.");
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+
+  if(permission === "granted") {
+    toast("🔔 Notifications enabled.");
+  }
+}
+
+document.getElementById("profileClass")?.addEventListener("change",e => {
+  db.profile.studentClass = e.target.value;
+  db.profile.examDate = getExamDateForClass(e.target.value);
+  document.getElementById("profileExamDate").value = e.target.value === "11"
+    ? "2028-01-05T09:00"
+    : "2027-01-05T09:00";
+  saveDB();
+  renderExamCountdown();
+});
+
+document.getElementById("notifyEnabled")
+  .addEventListener("change",e => {
+
+    db.profile.notifications = e.target.checked;
+
+    if(e.target.checked) requestNotifications();
+
+    saveDB();
+  });
+
+/* =========================================================
+   TIMER ENGINE
+   ========================================================= */
+
+function timerState(ms) {
+
+  const hours = ms/(60*60*1000);
+
+  if(hours > 12)
+    return {class:"safe"};
+
+  if(hours > 6)
+    return {class:"mid"};
+
+  if(hours > 3)
+    return {class:"warning"};
+
+  return {class:"danger"};
+}
+
+function updateTimers() {
+
+  processExpirations();
+
+  document.querySelectorAll("[data-deadline]").forEach(el => {
+
+    const deadline = Number(el.dataset.deadline);
+    const remaining = Math.max(0,deadline-Date.now());
+    const state = timerState(remaining);
+
+    el.textContent = formatTime(remaining);
+
+    el.classList.remove("safe","mid","warning","danger");
+    el.classList.add(state.class);
+
+    const card = el.closest(".task");
+
+    if(card) {
+      card.classList.remove("warning","danger");
+
+      if(state.class === "warning")
+        card.classList.add("warning");
+
+      if(state.class === "danger")
+        card.classList.add("danger");
+    }
+  });
+
+  renderExamCountdown();
+}
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+
+function formatTime(ms) {
+
+  let total = Math.floor(ms/1000);
+
+  const h = Math.floor(total/3600);
+
+  total %= 3600;
+
+  const m = Math.floor(total/60);
+
+  const s = total%60;
+
+  return [
+    String(h).padStart(2,"0"),
+    String(m).padStart(2,"0"),
+    String(s).padStart(2,"0")
+  ].join(":");
+}
+
+function formatDuration(ms) {
+
+  const totalHours = Math.floor(ms/(60*60*1000));
+
+  const days = Math.floor(totalHours/24);
+
+  const hours = totalHours%24;
+
+  if(days > 0)
+    return `${days} day${days>1?"s":""} ${hours} hour${hours!==1?"s":""}`;
+
+  return `${hours} hour${hours!==1?"s":""}`;
+}
+
+function formatDate(timestamp) {
+
+  if(!timestamp) return "N/A";
+
+  return new Date(timestamp).toLocaleString("en-IN",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+}
+
+function dateKey(value) {
+
+  const d = new Date(value);
+
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+}
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function toast(message) {
+
+  const container =
+    document.getElementById("toastContainer");
+
+  const item = document.createElement("div");
+
+  item.className = "toast";
+  item.textContent = message;
+
+  container.appendChild(item);
+
+  setTimeout(() => item.remove(),3500);
+}
+
+function resetAllData() {
+
+  if(!confirm(
+    "Delete ALL JEE24 data stored in this browser?"
+  )) return;
+
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem("jee24_streak");
+  localStorage.removeItem("jee24_longest");
+
+  location.reload();
+}
+
+/* =========================================================
+   GLOBAL RENDER
+   ========================================================= */
+
+function renderHeader() {
+
+  const now = new Date();
+
+  document.getElementById("dateText").textContent =
+    now.toLocaleDateString("en-IN",{
+      weekday:"long",
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
+
+  document.getElementById("miniName").textContent =
+    db.profile.name || "JEE Student";
+
+  const avatar = db.profile.avatar || "🚀";
+  const pfp = db.profile.pfp || "";
+  document.getElementById("miniAvatar").innerHTML = pfp ? `<img src="${pfp}" alt="Profile picture" style="width:100%;height:100%;object-fit:cover;border-radius:12px">` : escapeHTML(avatar);
+
+  const level = levelFromXP(totalXP());
+
+  document.getElementById("miniLevel").textContent =
+    `Level ${level.level}`;
+
+  const topAvatar=document.getElementById("topProfileAvatar");
+  const topName=document.getElementById("topProfileName");
+  if(topAvatar) topAvatar.innerHTML = pfp ? `<img src="${pfp}" alt="Profile picture">` : escapeHTML(avatar);
+  if(topName) topName.textContent = db.profile.name || "Profile";
+
+  const summaryAvatar=document.getElementById("profileSummaryAvatar");
+  const summaryName=document.getElementById("profileSummaryName");
+  const levelBadge=document.getElementById("profileLevelBadge");
+  if(summaryAvatar) summaryAvatar.innerHTML = pfp ? `<img src="${pfp}" alt="Profile picture">` : escapeHTML(avatar);
+  if(summaryName) summaryName.textContent=db.profile.name||"JEE Student";
+  if(levelBadge) levelBadge.textContent=`Level ${level.level}`;
+
+  const badgeRow=document.getElementById("profileBadgeRow");
+  if(badgeRow) {
+    const unlocked=achievements.filter(a=>db.achievements.includes(a.id));
+    badgeRow.innerHTML=unlocked.length ? unlocked.map(a=>`<span class="profile-badge">${a.icon} ${escapeHTML(a.name)}</span>`).join("") : `<span class="stat-sub">No badges unlocked yet — keep going!</span>`;
+  }
+}
+
+function renderAll() {
+
+  processExpirations();
+  checkAchievements();
+
+  renderHeader();
+  renderDashboard();
+  renderTasks();
+  renderBacklog();
+  renderCompletedBacklog();
+  renderCompletedChapters();
+  renderDoubts();
+  renderMockTests();
+  renderStats();
+  renderAchievements();
+  loadProfile();
+  announceLevelIfNeeded();
+}
+
+window.addEventListener("load",() => {
+
+  loadTheme();
+  renderAll();
+  ensureStudentClass();
+
+  /*
+    One shared timer rather than a timer for every task.
+    This keeps CPU usage low even when many tasks exist.
+  */
+  setInterval(updateTimers,1000);
+
+  /*
+    Reconcile task expiration regularly.
+    A production backend should perform this server-side.
+  */
+  setInterval(() => {
+    processExpirations();
+    renderAll();
+  },15000);
+});
+
+document.getElementById("modal").addEventListener("click",e => {
+  if(e.target.id === "modal") closeModal();
+});
+
+</script>
+
+</body>
+</html>
